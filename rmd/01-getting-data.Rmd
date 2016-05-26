@@ -1,0 +1,1058 @@
+---
+title: "Getting data"
+output: html_document
+---
+
+<style type="text/css">
+blockquote { 
+    font-size: 11pt
+}
+.table {
+    width: auto !important;
+}
+</style>
+
+The data described below comes from [Wharton Research Data Services](https://wrds-web.wharton.upenn.edu/wrds/). And it was extracted on 2016-02-26, unless otherwise stated.
+
+## Thomson Reuters Mutual Fund Holdings (s12)
+The data on **Mutual Fund Holdings (s12)** is provided by Thomson Reuters. The data there is divded into four types:
+
+- **s12 Master File**
+- **Type 1: Fund Characteristics**
+- **Type 2: Stock Characteristics**
+- **Type 3: Stock Holdings**
+- **Type 4: Change in Holdgins**
+
+The **s12 Master File** has some manupulations already performaed on it, therefore we download the four types of data separately.
+
+	
+> **Important Changes to TFN Reuters - July 2008**
+> 
+> The master s12 and s34 datasets have been created by merging on FDATE (file date). This is a change to the previous design which merged the Type 2 file (stock characteristics) using the RDATE (report date) of the Type 2 file.
+> 
+> If a fund's filing is missing for a quarter (due to a late filing or other reason), Thomson Reuters carries forward the previous holding data. WRDS previously removed this duplicate record from the master file to prevent double-counting. The current master file includes all records that have been carried forward reproducing the way Thomson Reuters delivers this data.
+> 
+> Several filters imposed on the master files to eliminate duplicate records have been removed. These had minimal effect, but may still alter the data from the way Thomson Reuters provided it.
+> 
+> The SHROUTR variable is no longer produced. This WRDS-created variable was a combination of Shares Outstanding variables from both the s12 and s34 products. It was intended to address the many missing values in each of the Shares Outstanding variables provided by Thomson Reuters. However, SHROUTR may be confusing and it is not clear which source file contributed in each case.
+> 
+> The variable PERMKEY is no longer populated by Thomson Reuters and has been dropped from the master file.
+> 
+> The code used to create the s12 and s34 master files is available on the documentation page of the respective queries, and also in the Thomson Reuters sample directory on Unix. Researchers may choose to use the master files or may query each Type file directly.
+
+
+### Type 1: fund characteristics
+#### Query form
+
+| Step | Field | Value |
+| ---- | ------- | ------ |
+| **Step 1: Choose your data range.** | Date range | `1979-01`--`2015-09` |
+| **Step 2: Apply your company codes.** | | `FUNDNO` |
+|  | Select an option for entering company codes | Search the entire database |
+| **Step 3: Query Variables.** | Select | All |
+| **Step 4: Select query output.** | Output Format | `comma-delimited text (*.csv) ` |
+| | Compression Type | `gzip (*.gz)` |
+| | Date Format | `YYMMDDs10. (e.g. 1984/07/25)` | 
+
+The output is saved into `~/data/` directory under the name `wrds-tr-s12-type1-197901-201509.csv.gz`. 
+
+#### Data request summary
+
+| Key | Value |
+| ------------- | ------------- |
+| Data Request ID | 1a279ca168c9cd26 |
+| Libraries/Data Sets | tfn/s12type1  / |
+| Frequency/Date Range | / 01Jan1979 - 30Sep2015 |
+| Search Variable | FUNDNO |
+| Input Codes all item(s) | `-all-` |
+| Conditional Statements | n/a |
+| Output format/Compression | csv / gz |
+| Variables Selected | ASSETS COUNTRY FDATE FUNDNAME FUNDNO IOC MGRCOAB PRDATE RDATE |
+| Extra Variables and Parameters Selected |  |
+
+### Type 2: stock characteristics
+#### Query form
+
+| Step | Field | Value |
+| ---- | ------- | ------ |
+| **Step 1: Choose your data range.** | Date range | `1979-01`--`2015-09` |
+| **Step 2: Apply your company codes.** | | `CUSIP` |
+|  | Select an option for entering company codes | Search the entire database |
+| **Step 3: Query Variables.** | Select | All |
+| **Step 4: Select query output.** | Output Format | `comma-delimited text (*.csv) ` |
+| | Compression Type | `gzip (*.gz)` |
+| | Date Format | `YYMMDDs10. (e.g. 1984/07/25)` | 
+
+The output is saved into `~/data/` directory under the name `wrds-tr-s12-type2-197901-201509.csv.gz`. 
+
+#### Data request summary
+
+| Key | Value |
+| ------------- | ------------- |
+| Data Request ID | cb7bd750ea5f15aa |
+| Libraries/Data Sets | tfn/s12type2    / |
+| Frequency/Date Range | / 01Jan1979 - 30Sep2015 |
+| Search Variable | CUSIP |
+| Input Codes all item(s) | `-all-` |
+| Conditional Statements | n/a |
+| Output format/Compression | csv / gz |
+| Variables Selected | CUSIP EXCHCD FDATE INDCODE PRC SHROUT1 SHROUT2 STKCD STKCDESC STKNAME TICKER TICKER2 |
+| Extra Variables and Parameters Selected |  |
+
+### Type 3: stock holdings
+#### Query form
+
+| Step | Field | Value |
+| ---- | ------- | ------ |
+| **Step 1: Choose your data range.** | Date range | `1979-01`--`2015-09` |
+| **Step 2: Apply your company codes.** | | `CUSIP (of holdings)` |
+|  | Select an option for entering company codes | Search the entire database |
+| **Step 3: Query Variables.** | Select | All |
+| **Step 4: Select query output.** | Output Format | `comma-delimited text (*.csv) ` |
+| | Compression Type | `gzip (*.gz)` |
+| | Date Format | `YYMMDDs10. (e.g. 1984/07/25)` | 
+
+The output is saved into `~/data/` directory under the name `wrds-tr-s12-type3-197901-201509.csv.gz`. 
+
+#### Data request summary
+
+| Key | Value |
+| ------------- | ------------- |
+| Data Request ID | cb7bd750ea5f15aa |
+| Libraries/Data Sets | tfn/s12type3    / |
+| Frequency/Date Range | / 01Jan1979 - 30Sep2015 |
+| Search Variable | FUNDNO |
+| Input Codes all item(s) | `-all-` |
+| Conditional Statements | n/a |
+| Output format/Compression | csv / gz |
+| Variables Selected | CUSIP FDATE FUNDNO SHARES |
+| Extra Variables and Parameters Selected |  |
+
+### Type 4: change in holdings
+#### Query form
+
+| Step | Field | Value |
+| ---- | ------- | ------ |
+| **Step 1: Choose your data range.** | Date range | `1979-01`--`2015-09` |
+| **Step 2: Apply your company codes.** | | `CUSIP (of holdings)` |
+|  | Select an option for entering company codes | Search the entire database |
+| **Step 3: Query Variables.** | Select | All |
+| **Step 4: Select query output.** | Output Format | `comma-delimited text (*.csv) ` |
+| | Compression Type | `gzip (*.gz)` |
+| | Date Format | `YYMMDDs10. (e.g. 1984/07/25)` | 
+
+The output is saved into `~/data/` directory under the name `wrds-tr-s12-type4-197901-201509.csv.gz`. 
+
+#### Data request summary
+
+| Key | Value |
+| ------------- | ------------- |
+| Data Request ID | ac457d43e878375b |
+| Libraries/Data Sets | tfn/s12type4    / |
+| Frequency/Date Range | / 01Jan1979 - 30Sep2015 |
+| Search Variable | FUNDNO |
+| Input Codes all item(s) | `-all-` |
+| Conditional Statements | n/a |
+| Output format/Compression | csv / gz |
+| Variables Selected | CHANGE CUSIP FDATE FUNDNO |
+| Extra Variables and Parameters Selected |  |
+
+
+
+## CRSP Mutual Fund Database
+The data on **CRSP Mutual Funds** is divided into a number of chunks:
+
+- **Fund summary**
+- **Daily returns**
+- **Monthly returns**
+- **Portfolio holdings**
+- **Fund dividennds**
+- **Fund-portfolio map**
+- **Front loads**
+- **Rear loads**
+- **Contact information**
+
+We download all of them separately.
+
+### Fund summary
+#### Query form
+
+| Step | Field | Value |
+| ---- | ------- | ------ |
+| **Step 1: Choose your data range.** | Date range | `1961-12`--`2015-12` |
+| **Step 2: Apply your company codes.** | | `Fund Identifier` |
+|  | Select an option for entering company codes | Search the entire database |
+|  | Choose Summary Period: | All |
+|  | Conditional Statements (Optional) | None (leave fields empty) |
+| **Step 3: Query Variables.** | Select | All |
+| **Step 4: Select query output.** | Output Format | `comma-delimited text (*.csv) ` |
+| | Compression Type | `gzip (*.gz)` |
+| | Date Format | `YYMMDDs10. (e.g. 1984/07/25)` | 
+
+The output is saved into `~/data/` directory under the name `wrds-crsp-mfdb-fund-summary-196112-2015-12.csv.gz`.
+
+#### Data request summary
+
+Data request summary:
+
+| Key | Value |
+| ------------- | ------------- |
+| Data Request ID | 94fa457aed11dd22 |
+| Libraries/Data Sets | crspq/fund_summary2  / |
+| Frequency/Date Range | / 29Dec1961  - 31Dec2015 |
+| Search Variable | crsp_fundno |
+| Input Codes all item(s) | `-all-` |
+| Conditional Statements | n/a |
+| Output format/Compression | csv / gz |
+| Variables Selected | CRSP_PORTNO CUSIP8 FUND_NAME NASDAQ NCUSIP FIRST_OFFER_DT CRSP_CL_GRP MGMT_NAME MGMT_CD MGR_NAME MGR_DT ADV_NAME OPEN_TO_INV RETAIL_FUND INST_FUND M_FUND END_DT DEAD_FLAG DELIST_CD INDEX_FUND_FLAG VAU_FUND ET_FLAG MERGE_FUNDNO NAV_LATEST NAV_LATEST_DT TNA_LATEST TNA_LATEST_DT YIELD NAV_52W_H NAV_52W_H_DT NAV_52W_L NAV_52W_L_DT DIV_YTD CAP_GAINS_YTD UNREALIZED_APP_DEP UNREALIZED_APP_DT MATURITY MATURITY_DT ASSET_DT PER_COM PER_PREF PER_CONV PER_CORP PER_MUNI PER_GOVT PER_OTH PER_CASH PER_BOND PER_ABS PER_MBS PER_EQ_OTH PER_FI_OTH ACCRUAL_FUND SI_OBJ_CD WBRGER_OBJ_CD CRSP_OBJ_CD SALES_RESTRICT POLICY LIPPER_CLASS LIPPER_CLASS_NAME LIPPER_OBJ_CD LIPPER_OBJ_NAME LIPPER_ASSET_CD LIPPER_TAX_CD ACTUAL_12B1 MAX_12B1 EXP_RATIO MGMT_FEE TURN_RATIO FISCAL_YEAREND |
+| Extra Variables and Parameters Selected | A Q |
+
+### Daily returns
+#### Query form
+
+| Step | Field | Value |
+| ---- | ------- | ------ |
+| **Step 1: Choose your data range.** | Date range | `1998-09-01`--`2015-12-31` |
+| **Step 2: Apply your company codes.** | | `Fund Identifier` |
+|  | Select an option for entering company codes | Search the entire database |
+|  | Conditional Statements (Optional) | None (leave fields empty) |
+| **Step 3: Query Variables.** | Select | All |
+| **Step 4: Select query output.** | Output Format | `comma-delimited text (*.csv) ` |
+| | Compression Type | `gzip (*.gz)` |
+| | Date Format | `YYMMDDs10. (e.g. 1984/07/25)` | 
+
+The output is saved into `~/data/` directory under the name `wrds-crsp-mfdb-daily-returns-19980901-20151231.csv.gz`.
+
+#### Data request summary
+
+Data request summary:
+
+| Key | Value |
+| ------------- | ------------- |
+| Data Request ID | 6488cfb72e6cfb75 |
+| Libraries/Data Sets | crspq/daily_nav_ret  /  |
+| Frequency/Date Range | / 01Sep1998 - 31Dec2015|
+| Search Variable | crsp_fundno |
+| Input Codes all item(s) | `-all-` |
+| Conditional Statements | n/a |
+| Output format/Compression | csv / gz |
+| Variables Selected | DRET DNAV |
+| Extra Variables and Parameters Selected | |
+
+### Monthly returns
+#### Query form
+
+| Step | Field | Value |
+| ---- | ------- | ------ |
+| **Step 1: Choose your data range.** | Date range | `1961-12`--`2015-12` |
+| **Step 2: Apply your company codes.** | | `Fund Identifier` |
+|  | Select an option for entering company codes | Search the entire database |
+|  | Conditional Statements (Optional) | None (leave fields empty) |
+| **Step 3: Query Variables.** | Select | All |
+| **Step 4: Select query output.** | Output Format | `comma-delimited text (*.csv) ` |
+| | Compression Type | `gzip (*.gz)` |
+| | Date Format | `YYMMDDs10. (e.g. 1984/07/25)` | 
+
+The output is saved into `~/data/` directory under the name `wrds-crsp-mfdb-monthly-returns-196112-2015-12.csv.gz`.
+
+#### Data request summary
+
+Data request summary:
+
+| Key | Value |
+| ------------- | ------------- |
+| Data Request ID | 44f62b5897d88727 |
+| Libraries/Data Sets | crspq/monthly_tna_ret_nav  / |
+| Frequency/Date Range | / 01Dec1961 - 31Dec2015 |
+| Search Variable | crsp_fundno |
+| Input Codes all item(s) | `-all-` |
+| Conditional Statements | n/a |
+| Output format/Compression | csv / gz |
+| Variables Selected | MRET MNAV MTNA |
+| Extra Variables and Parameters Selected | |
+
+### Portfolio holdings
+#### Query form
+
+| Step | Field | Value |
+| ---- | ------- | ------ |
+| **Step 1: Choose your data range.** | Date Variable: | Date pf holdings as reported |
+| Date range | `2001-01`--`2015-12` |
+| **Step 2: Apply your company codes.** | | `CRSP Portno` |
+|  | Select an option for entering company codes | Search the entire database |
+|  | Conditional Statements (Optional) | None (leave fields empty) |
+| **Step 3: Query Variables.** | Select | All |
+| **Step 4: Select query output.** | Output Format | `comma-delimited text (*.csv) ` |
+| | Compression Type | `gzip (*.gz)` |
+| | Date Format | `YYMMDDs10. (e.g. 1984/07/25)` | 
+
+The output is saved into `~/data/` directory under the name `wrds-crsp-mfdb-portfolio-holdings-200101-2015-12.csv.gz`.
+
+#### Data request summary
+
+Data request summary:
+
+| Key | Value |
+| ------------- | ------------- |
+| Data Request ID | 622b95ce9d6d9626 |
+| Libraries/Data Sets | crspq/holdings  / |
+| Frequency/Date Range | / 01Jan2001 - 31Dec2015|
+| Search Variable | crsp_fundno |
+| Input Codes all item(s) | `-all-` |
+| Conditional Statements | n/a |
+| Output format/Compression | csv / gz |
+| Variables Selected | CRSP_PORTNO REPORT_DT SECURITY_RANK EFF_DT PERCENT_TNA NBR_SHARES MARKET_VAL SECURITY_NAME CUSIP PERMNO PERMCO TICKER COUPON MATURITY_DT |
+| Extra Variables and Parameters Selected | |
+
+### Fund dividends
+#### Query form
+
+| Step | Field | Value |
+| ---- | ------- | ------ |
+| **Step 1: Choose your data range.** | Date range | `1960-12-01`--`2015-12` |
+| **Step 2: Apply your company codes.** | | `Fund Identifier` |
+|  | Select an option for entering company codes | Search the entire database |
+|  | Conditional Statements (Optional) | None (leave fields empty) |
+| **Step 3: Query Variables.** | Select | All |
+| **Step 4: Select query output.** | Output Format | `comma-delimited text (*.csv) ` |
+| | Compression Type | `gzip (*.gz)` |
+| | Date Format | `YYMMDDs10. (e.g. 1984/07/25)` | 
+
+The output is saved into `~/data/` directory under the name `wrds-crsp-mfdb-fund-dividends-19601201-201512.csv.gz`.
+
+#### Data request summary
+
+Data request summary:
+
+| Key | Value |
+| ------------- | ------------- |
+| Data Request ID | 97b6ae3ea5404755 |
+| Libraries/Data Sets | crspq/dividends  /  |
+| Frequency/Date Range | / 01Dec1960 - 31Dec2015 |
+| Search Variable | crsp_fundno |
+| Input Codes all item(s) | `-all-` |
+| Conditional Statements | n/a |
+| Output format/Compression | csv / gz |
+| Variables Selected | DIS_TYPE DIS_AMT REINVEST_NAV SPL_RATIO |
+| Extra Variables and Parameters Selected | |
+
+### Fund-portfolio map
+#### Query form
+
+| Step | Field | Value |
+| ---- | ------- | ------ |
+| **Step 1: Apply your company codes.** | | `CRSP Fundno` |
+|  | Select an option for entering company codes | Search the entire database |
+| **Step 2: Query Variables.** | Select | All |
+| **Step 3: Select query output.** | Output Format | `comma-delimited text (*.csv) ` |
+| | Compression Type | `gzip (*.gz)` |
+| | Date Format | `YYMMDDs10. (e.g. 1984/07/25)` | 
+
+The output is saved into `~/data/` directory under the name `wrds-crsp-mfdb-fund-portfolio-map.csv.gz`.
+
+#### Data request summary
+
+Data request summary:
+
+| Key | Value |
+| ------------- | ------------- |
+| Data Request ID | b22eddacd8eaebaa |
+| Libraries/Data Sets | crspq/portnomap  /  |
+| Frequency/Date Range | / -  |
+| Search Variable | crsp_fundno |
+| Input Codes all item(s) | `-all-` |
+| Conditional Statements | n/a |
+| Output format/Compression | csv / gz |
+| Variables Selected | CRSP_FUNDNO CRSP_PORTNO BEGDT ENDDT FUND_NAME NASDAQ NCUSIP CUSIP8 FIRST_OFFER_DT END_DT MGMT_NAME MGMT_CD MGR_NAME MGR_DT ADV_NAME OPEN_TO_INV RETAIL_FUND INST_FUND DEAD_FLAG DELIST_CD MERGE_FUNDNO |
+| Extra Variables and Parameters Selected | |
+
+### Front loads
+#### Query form
+
+| Step | Field | Value |
+| ---- | ------- | ------ |
+| **Step 1: Apply your company codes.** | | `Fund Identifier` |
+|  | Select an option for entering company codes | Search the entire database |
+|  | Conditional Statements (Optional) | None (leave fields empty) |
+| **Step 2: Query Variables.** | Select | All |
+| **Step 3: Select query output.** | Output Format | `comma-delimited text (*.csv) ` |
+| | Compression Type | `gzip (*.gz)` |
+| | Date Format | `YYMMDDs10. (e.g. 1984/07/25)` | 
+
+The output is saved into `~/data/` directory under the name `wrds-crsp-mfdb-front-loads.csv.gz`.
+
+#### Data request summary
+
+Data request summary:
+
+| Key | Value |
+| ------------- | ------------- |
+| Data Request ID | 7f3f31bc0421466b |
+| Libraries/Data Sets | crspq/front_load  / |
+| Frequency/Date Range | / -  |
+| Search Variable | crsp_fundno |
+| Input Codes all item(s) | `-all-` |
+| Conditional Statements | n/a |
+| Output format/Compression | csv / gz |
+| Variables Selected | BEGDT ENDDT FRONT_GROUP_NO FRONT_LOAD DOLLAR_AMT |
+| Extra Variables and Parameters Selected | |
+
+### Rear loads
+#### Query form
+
+| Step | Field | Value |
+| ---- | ------- | ------ |
+| **Step 1: Apply your company codes.** | | `Fund Identifier` |
+|  | Select an option for entering company codes | Search the entire database |
+|  | Conditional Statements (Optional) | None (leave fields empty) |
+| **Step 2: Query Variables.** | Select | All |
+| **Step 3: Select query output.** | Output Format | `comma-delimited text (*.csv) ` |
+| | Compression Type | `gzip (*.gz)` |
+| | Date Format | `YYMMDDs10. (e.g. 1984/07/25)` | 
+
+The output is saved into `~/data/` directory under the name `wrds-crsp-mfdb-rear-loads.csv.gz`.
+
+#### Data request summary
+
+Data request summary:
+
+| Key | Value |
+| ------------- | ------------- |
+| Data Request ID | bd032691516f794d |
+| Libraries/Data Sets | crspq/rear_load  / |
+| Frequency/Date Range | / -  |
+| Search Variable | crsp_fundno |
+| Input Codes all item(s) | `-all-` |
+| Conditional Statements | n/a |
+| Output format/Compression | csv / gz |
+| Variables Selected | BEGDT ENDDT REAR_GROUP_NO REAR_LOAD INV_LVL LOAD_TYPE TIME_PERIOD |
+| Extra Variables and Parameters Selected | |
+
+### Contact information
+#### Query form
+
+| Step | Field | Value |
+| ---- | ------- | ------ |
+| **Step 1: Apply your company codes.** | | `Fund Identifier` |
+|  | Select an option for entering company codes | Search the entire database |
+|  | Conditional Statements (Optional) | None (leave fields empty) |
+| **Step 2: Query Variables.** | Select | All |
+| **Step 3: Select query output.** | Output Format | `comma-delimited text (*.csv) ` |
+| | Compression Type | `gzip (*.gz)` |
+| | Date Format | `YYMMDDs10. (e.g. 1984/07/25)` | 
+
+The output is saved into `~/data/` directory under the name `wrds-crsp-mfdb-contact-infromation.csv.gz`.
+
+#### Data request summary
+
+Data request summary:
+
+| Key | Value |
+| ------------- | ------------- |
+| Data Request ID | 5dcc2a4372d7eb02 |
+| Libraries/Data Sets | crspq/contact_info  / |
+| Frequency/Date Range | / -  |
+| Search Variable | crsp_fundno |
+| Input Codes all item(s) | `-all-` |
+| Conditional Statements | n/a |
+| Output format/Compression | csv / gz |
+| Variables Selected | BCHGDT CHGENDDT ADDRESS1 ADDRESS2 CITY STATE ZIP PHONE_NUMBER FUND_TOLL_FREE WEBSITE |
+| Extra Variables and Parameters Selected | |
+
+
+## CRSP stock data
+### CRSP Daily Stock
+This data was extracted on 2016-04-08.
+
+#### Query form
+
+| Step | Field | Value |
+| ---- | ------- | ------ |
+| **Step 1: Choose your date range.** | Date range | `1990-01-01`--`2015-12-31` |
+| **Step 2: Apply your company codes.** | Select an option for entering company codes (`ncusip`) | Upload a `cusip-list.txt` file that results from running `03-export-cusips.R` |
+|  | Conditional Statements (Optional) | None (leave fields empty) |
+| **Step 2: Query Variables.** | Select | All |
+| **Step 3: Select query output.** | Output Format | `comma-delimited text (*.csv) ` |
+| | Compression Type | `gzip (*.gz)` |
+| | Date Format | `YYMMDDs10. (e.g. 1984/07/25)` | 
+
+The output is saved into `~/data/` directory under the name `wrds-crsp-stocks-daily-19900101-20151231.csv.gz`.
+
+#### Data request summary
+
+Data request summary:
+
+| Key | Value |
+| ------------- | ------------- |
+| Data Request ID | 4650f4eafedbc982 |
+| Libraries/Data Sets | crspa/dsf  / |
+| Frequency/Date Range | day / 01Jan1990 - 31Dec2015 |
+| Search Variable | NCUSIP |
+| Input Codes all item(s) 55555 item(s) | `31806710 -etc-` |
+| Conditional Statements | n/a |
+| Output format/Compression | csv / gz |
+| Variables Selected | CUSIP NCUSIP COMNAM TICKER PERMCO SHRCD SHRCLS ISSUNO EXCHCD HEXCD SICCD HSICCD HSICMG HSICIG NAMEENDT TSYMBOL NAICS PRIMEXCH TRDSTAT SECSTAT PRC VOL OPENPRC ASKHI BIDLO BID ASK NUMTRD RET RETX SHROUT SHRFLG |
+| Extra Variables and Parameters Selected | |
+
+
+## MFLINKS
+We were unable to extract this data ourselves and asked help. Therefore, we are unaware of the exact source, date and extraction method.
+
+## S&P 1200 Global index
+We were unable to extract this data ourselves and asked help. Therefore, we are unaware of the exact source, date and extraction method. However, it looks like it cam from Bloomberg.
+
+## Bond index
+We use BofA Merrill Lynch US Corp 3-5yr Total Return Index Value for our bond index to approximate bond returns. It can be obtained from [here](https://research.stlouisfed.org/fred2/series/BAMLCC2A035YTRIV).
+
+## Cash return
+### CRSP TREASURIES - Issue Descriptions and Daily Time Series
+This data was extracted on 2016-04-20.
+
+#### Query form
+
+| Step | Field | Value |
+| ---- | ------- | ------ |
+| **Step 1: Choose your date range.** | Date range | `1990-01-01`--`2015-12-31` |
+| **Step 2: Bond Properties (Optional).** | Type of issue | Treasury Bill |
+|  | Conditional Statements (Optional) | None (leave fields empty) |
+| **Step 2: Query Variables.** | Select | Treasury CUSIP, Daily Unadjusted Return |
+| **Step 3: Select query output.** | Output Format | `comma-delimited text (*.csv) ` |
+| | Compression Type | `gzip (*.gz)` |
+| | Date Format | `YYMMDDs10. (e.g. 1984/07/25)` | 
+
+The output is saved into `~/data/` directory under the name `wrds-crsp-t-bills-daily-19900101-20153112.csv.gz`.
+
+#### Data request summary
+
+Data request summary:
+
+| Key | Value |
+| ------------- | ------------- |
+| Data Request ID | b5c3acf2b7496952 |
+| Libraries/Data Sets | crspa/tfz_dly  /  |
+| Frequency/Date Range | / 01Jan1990 - 31Dec2015 |
+| Search Variable | caldt |
+| Input Codes all item(s) |  |
+| Conditional Statements | n/a |
+| Output format/Compression | csv / gz |
+| Variables Selected | TCUSIP TDRETNUA |
+| Extra Variables and Parameters Selected | 4 |
+
+
+## Carhart factors
+### Fama-French Factors - Monthly Frequency
+This data was extracted on 2016-04-27.
+
+#### Query form
+
+| Step | Field | Value |
+| ---- | ------- | ------ |
+| **Step 1: Choose your date range.** | Date range | `1990-01`--`2016-01` |
+| **Step 2: Choose factors for query Variables.** | Select | All |
+| **Step 3: Select query output.** | Output Format | `comma-delimited text (*.csv) ` |
+| | Compression Type | `gzip (*.gz)` |
+| | Date Format | `YYMMDDs10. (e.g. 1984/07/25)` | 
+
+The output is saved into `~/data/` directory under the name `wrds-ff-monthly-199001-201601.csv.gz`.
+
+#### Data request summary
+
+Data request summary:
+
+| Key | Value |
+| ------------- | ------------- |
+| Data Request ID | Fama-French Factors - Monthly Frequency |
+| Libraries/Data Sets | ff/factors_monthly  /   |
+| Frequency/Date Range | / 01Jan1990 - 29Jan2016 |
+| Search Variable |  |
+| Input Codes all item(s) |  |
+| Conditional Statements | n/a |
+| Output format/Compression | csv / gz |
+| Variables Selected | SMB HML MKTRF RF UMD |
+| Extra Variables and Parameters Selected | |
+
+
+
+## Variable description
+### Thomson Reuters Mutual Fund Holdings
+Some of the information, including the relationship between four types can found [here](../data-description/raw/tr-mfh/wrds-overview-of-thomson-reuters-mutual-fund-and-investment-company-data.pdf) and [here](../data-description/raw/tr-mfh/thomson-reuters-legacy-institutional-(13f)-holdings-data-feeds-specification.pdf).
+
+#### Type 1: fund characteristics
+Thomson Reuters Mutual Fund Holdings - Type 1: Fund Characteristics
+
+| Key | Value |
+| --- | --- |
+| Library: | tfn |
+| File: | s12type1 |
+| Data Range: | 01/01/1979 - 09/30/2015 |
+| Last Updated On: | 01/13/2016 |
+| Update Schedule: | Quarterly |
+
+Variable Reference
+
+| Variable Name | Variable Description |
+| --- | --- |
+| assets | End of Qtr Assets (x10000) |
+| COUNTRY | Country |
+| FDATE | File Date |
+| fundname | Fund Name |
+| fundno | Fund Number |
+| IOC | Investment Objective Code |
+| MGRCOAB | Managment Company Abbreviation |
+| PRDATE | Prior Report Date |
+| RDATE | Report Date |
+
+#### Type 2: stock characteristics
+Thomson Reuters Mutual Fund Holdings - Type 2: Stock Characteristics
+
+| Key | Value |
+| --- | --- |
+| Library: | tfn |
+| File: | s12type2 |
+| Data Range: | 01/01/1979 - 09/30/2015 |
+| Last Updated On: | 01/13/2016 |
+| Update Schedule: | Quarterly |
+
+Variable Reference
+
+| Variable Name | Variable Description |
+| --- | --- |
+| cusip | Cusip |
+| exchcd | Exchange Code |
+| FDATE | File Date |
+| indcode | Industry Code |
+| prc | End of Qtr Share Price |
+| shrout1 | End of Qtr Shares Outstanding in Millions |
+| shrout2 | End of Qtr Shares Outstanding in 1000s |
+| stkcd | Stock Class Code |
+| stkcdesc | Stock Class Description |
+| stkname | Stock Name |
+| tick | Ticker Symbol |
+| ticker2 | Extended Company Ticker Symbol |
+
+#### Type 3: stock holdings
+Thomson Reuters Mutual Fund Holdings - Type 2: Stock Characteristics
+
+| Key | Value |
+| --- | --- |
+| Library: | tfn |
+| File: | s12type3 |
+| Data Range: | 01/01/1979 - 09/30/2015 |
+| Last Updated On: | 01/13/2016 |
+| Update Schedule: | Quarterly |
+
+Variable Reference
+
+| Variable Name | Variable Description |
+| --- | --- |
+| cusip | Cusip |
+| FDATE | File Date |
+| fundno | Fund Number |
+| shares | Shares Held at End of Qtr |
+
+#### Type 4: change in holdings
+Thomson Reuters Mutual Fund Holdings - Type 2: Stock Characteristics
+
+| Key | Value |
+| --- | --- |
+| Library: | tfn |
+| File: | s12type4 |
+| Data Range: | 01/01/1979 - 09/30/2015 |
+| Last Updated On: | 01/13/2016 |
+| Update Schedule: | Quarterly |
+
+Variable Reference
+
+| Variable Name | Variable Description |
+| --- | --- |
+| change | Net Change in Shares Since Prior Report |
+| cusip | Cusip |
+| FDATE | File Date |
+| fundno | Fund Number |
+
+
+### CRSP Mutual Fund Database
+Some of the information, including the relationship between four types can found [here](../data-description/raw/crsp-mfdb/crsp-mfdb-guide.pdf).
+
+#### Fund summary
+CRSP Mutual Funds - Summary
+
+| Key | Value |
+| --- | --- |
+| Library: | crspq |
+| File: | fund_summary2 |
+| Data Range: | 12/29/1961 - 12/31/2015 |
+| Last Updated On: | 02/02/2016 |
+| Update Schedule: | Quarterly |
+
+Variable Reference
+
+| Variable Name | Variable Description |
+| --- | --- |
+| accrual_fund | Accrual Fund Identifier |
+| actual_12b1 | 12b-1 Fee |
+| adv_name | Fund Advisor Name |
+| asset_dt | Effective Date of Asset Allocations |
+| cap_gains_ytd | Calendar Year-to-Date Capital Gains Sum |
+| crsp_cl_grp | Classes of a Fund |
+| crsp_obj_cd | CRSP objective codes (mapping of Strategic Insights, Wiesenberger, and Lipper objective codes) |
+| crsp_portno | Portfolio Identifier |
+| cusip8 | 8-digit CUSIP |
+| dead_flag | Dead Fund Indicator |
+| delist_cd| Identifies the reason for the fund delisting |
+| div_ytd| Calendar Year-to-Date Dividend Sum |
+| end_dt | Date of latest NAV data |
+| et_flag | Identifies if a fund is ETF(F) or ETN(N) |
+| exp_ratio | Expense Ratio as of Fiscal Year-End |
+| first_offer_dt | Date the Fund Was First Offered |
+| fiscal_yearend | Effective Date for Fees |
+| fund_name | Fund Name |
+| index_fund_flag | Identifies if a fund is an index fund |
+| inst_fund | Institutional Fund Indicator |
+| lipper_asset_cd | Lipper Asset Code |
+| lipper_class| Lipper Classification Code |
+| lipper_class_name | Lipper Classification Name |
+| lipper_obj_cd | Lipper Objective Code |
+| lipper_obj_name | Lipper Objective Name |
+| lipper_tax_cd | Taxable or Tax Exempt |
+| m_fund| Identifies if a fund was originally a "M" fund |
+| maturity | Weighted Average Maturity in Years |
+| maturity_dt | Date for Which Weighted Average Maturity Applies |
+| max_12b1| Maximum 12b-1 Fee |
+| merge_fundno| CRSP Fundno of the fund that acquired the assets of the delisted fund |
+| mgmt_cd | Management Company Number |
+| mgmt_fee | Management Fee |
+| mgmt_name| Management Company Name |
+| mgr_dt| Date Current Portfolio Mgr Took Control |
+| mgr_name| Portfolio Manager Name |
+| nasdaq | NASDAQ Ticker Symbol |
+| nav_52w_h | 52 Week High NAV |
+| nav_52w_h_dt| Date of 52 Week High NAV |
+| nav_52w_l | 52 Week Low NAV |
+| nav_52w_l_dt | Date of 52 Week Low NAV |
+| nav_latest | Latest Month-end NAV |
+| nav_latest_dt | Latest Month-end NAV Date |
+| ncusip| Fund CUSIP |
+| open_to_inv| Open to Investors|
+| per_abs | Asset-Backed Securities |
+| per_bond | All Bonds|
+| per_cash | Cash |
+| per_com | Common Stocks|
+| per_conv| Convertible Bonds |
+| per_corp | Corporate Bonds |
+| per_eq_oth | Equities other than common and preferred stocks |
+| per_fi_oth | Fixed-income securities other than the four existing bond categories, and the new ABS and MBS categories |
+| per_govt | Government Bonds |
+| per_mbs | Mortgage-Backed Securities|
+| per_muni | Municipal Bonds |
+| per_oth | Other Securities |
+| per_pref | Preferred Stocks |
+| policy | Type of Securities Mainly Held by Fund |
+| retail_fund | Retail Fund Indicator |
+| sales_restrict | Sales Restrictions |
+| si_obj_cd | Strategic Insight Objective Code | 
+| tna_latest | Latest Month-end TNA | 
+| tna_latest_dt | Latest Month-end TNA Date |
+| turn_ratio | Fund Turnover Ratio |
+| unrealized_app_dep | Unrealized Appreciation/Depreciation |
+| unrealized_app_dt | Effective Date for Unrealized Appreciate/Depreciation |
+| vau_fund | Identifies if a fund is a variable annuity underlying fund | 
+| wbrger_obj_cd | Wiesenberger Fund Type Code, Identifying Fund Strategy |
+| yield | Income Yield |
+
+#### Daily returns
+CRSP Mutual Funds - Daily Returns and Net Asset Values
+
+| Key | Value |
+| --- | --- |
+| Library: | crspq |
+| File: | daily_nav_ret |
+| Data Range: | 09/01/1998 - 12/31/2015   |
+| Last Updated On: | 02/02/2016 |
+| Update Schedule: | Quarterly |
+
+Variable Reference
+
+| Variable Name | Variable Description |
+| --- | --- |
+| dnav | Net Asset Value per Share |
+| dret | Return per Share |
+
+#### Monthly returns
+CRSP Mutual Funds - Monthly Returns and Net Asset Values
+
+| Key | Value |
+| --- | --- |
+| Library: | crspq |
+| File: | monthly_tna_ret_nav |
+| Data Range: | 12/01/1961 - 12/31/2015 |
+| Last Updated On: | 02/02/2016 |
+| Update Schedule: | Quarterly |
+
+Variable Reference
+
+| Variable Name | Variable Description |
+| --- | --- |
+| mnav | Net Asset Value per Share |
+| mret | Return per Share |
+| mtna | Total Net Asset Value |
+
+#### Portfolio holdings
+CRSP Mutual Funds - Holdings
+
+| Key | Value |
+| --- | --- |
+| Library: | crspq |
+| File: | holdings |
+| Data Range: | 01/01/2001 - 12/31/2015 |
+| Last Updated On: | 02/02/2016 |
+| Update Schedule: | Quarterly |
+
+Variable Reference
+
+| Variable Name | Variable Description |
+| --- | --- |
+| coupon | Bond Coupon Rate |
+| crsp_portno | Portfolio Identifier |
+| cusip | Security CUSIP |
+| eff_dt | Date that CRSP obtained the information from source |
+| market_val | Market Value of Security as of Effective Date |
+| maturity_dt | Date of Bond Maturity | 	
+| nbr_shares | Number of Security's Shares |
+| percent_tna| Security's Percentage of Total Net Assets | 
+| permco | PERMCO |
+| permno| PERMNO |
+| report_dt | Period End Date, as Reported |
+| security_name | Name of Security |
+| security_rank | Rank of Percentage of Total Net Assets in Portfolio |
+| ticker | Ticker Symbol Given by Exchange |
+
+#### Fund dividends
+CRSP Mutual Fund - Dividends
+
+| Key | Value |
+| --- | --- |
+| Library: | crspq |
+| File: | dividends |
+| Data Range: | 12/01/1960 - 12/31/2015 |
+| Last Updated On: | 02/02/2016 |
+| Update Schedule: | Quarterly |
+
+Variable Reference
+
+| Variable Name | Variable Description |
+| --- | --- |
+| dis_amt | Amount of Distribution |
+| dis_type | Type of Distribution |
+| reinvest_nav | Reinvestment NAV |
+| spl_ratio | Split Ratio |
+
+#### Fund-portfolio maps
+CRSP Mutual Funds - Fund Number to Portfolio Number Mapping
+
+| Key | Value |
+| --- | --- |
+| Library: | crspq |
+| File: | portnomap |
+
+Variable Reference
+
+| Variable Name | Variable Description |
+| --- | --- |
+| adv_name | Fund Advisor Name |
+| begdt | Beginning Date of Mapping |
+| crsp_fundno | CRSP Fund Number |
+| crsp_portno | CRSP Portfolio Number |
+| cusip8| CUSIP (8 digits) |
+| dead_flag | Dead Fund Indicator |
+| delist_cd | Delist Code|
+| end_dt | Date of latest NAV data |
+| enddt| Ending Date of Mapping |
+| first_offer_dt | Date the Fund Was First Offered |
+| fund_name | Fund Name |
+| inst_fund | Institutional Fund Indicator |
+| merge_fundno | Mergers Fundno |
+| mgmt_cd | Management Company Number |
+| mgmt_name | Management Company Name |
+| mgr_dt | Date Current Portfolio Manager Took Control |
+| mgr_name | Portfolio Manager Name |
+| nasdaq | NASDAQ Ticker Symbol |
+| ncusip| CUSIP (Original 9 digits) |
+| open_to_inv | Open to Investors |
+| retail_fund | Retail Fund Indicator |
+
+#### Front loads
+CRSP Mutual Funds - Front Loads
+
+| Key | Value |
+| --- | --- |
+| Library: | crspq |
+| File: | front_load |
+
+Variable Reference
+
+| Variable Name | Variable Description |
+| --- | --- |
+| begdt | Beginning Group Date |
+| dollar_amt | Dollar Amount |
+| enddt | Ending Group Date |
+| front_group_no | Front Group Number |
+| front_load | Maximum Front-End Load |
+
+#### Rear loads
+CRSP Mutual Funds - Front Loads
+
+| Key | Value |
+| --- | --- |
+| Library: | crspq |
+| File: | rear_load |
+
+Variable Reference
+
+| Variable Name | Variable Description |
+| --- | --- |
+| begdt | Beginning Group Date|
+| enddt | Ending Group Date |
+| inv_lvl| Dollar Amount|
+| load_type| Load Type|
+| rear_group_no | Rear Group Number |
+| rear_load | Max Defer & Rear Load Charges |
+| time_period | Number of Months over Which Rear-Load Fee Applies |
+
+#### Contact information
+CRSP Mutual Funds - Contact Information
+
+| Key | Value |
+| --- | --- |
+| Library: | crspq |
+| File: | contact_info |
+
+Variable Reference
+
+| Variable Name | Variable Description |
+| --- | --- |
+| address1 | Management Company Address - Line 1 |
+| address2 | Management Company Address - Line 2 |
+| chgdt | Beginning Date for Contact Information |
+| chgenddt | Ending Date for Contact Information |
+| city | Management Company City |
+| fund_toll_free | Fund Company Toll Free Number |
+| phone_number | Management Company Telephone Number |
+| state | Management Company State |
+| website | Management Company Website Address |
+| zip | Management Company Zip Code |
+
+
+### CRSP Stock Data
+#### Daily
+Thomson Reuters Mutual Fund Holdings - Type 2: Stock Characteristics
+
+| Key | Value |
+| --- | --- |
+| Library: | crspa |
+| File: | dsf |
+| Data Range: | 12/31/1925 - 12/31/2015 |
+| Last Updated On: | 02/02/2016 |
+| Update Schedule: | Annually |
+
+Variable Reference
+
+| Variable Name | Variable Description |
+| --- | --- |
+| accomp | Acquiring PERMCO | 
+| acperm | Acquiring PERMNO |
+| ask | Closing Ask | 
+| askhi | Ask or High |
+| bid | Closing Bid |
+| bidlo | Bid or Low |
+| cfacpr | Cumulative Factor to Adjust Price |
+| cfacshr | Cumulative Factor to Adjust Shares |
+| comnam | Company Name |
+| cusip | Cusip |
+| dclrdt | Declaration Date |
+| distcd | Distribution Code |
+| divamt | Dividend Cash Amount |
+| dlamt | Amount After Delisting |
+| dlpdt | Date of Delisting Payment |
+| dlprc | Delisting Price |
+| dlret | Delisting Return |
+| dlretx | Delisting Return without Dividends |
+| dlstcd | Delisting Code |
+| ewretd | Equal-Weighted Return (includes distributions) |
+| ewretx | Equal-Weighted Return (excluding dividends) |
+| exchcd | Exchange Code |
+| facpr | Factor to Adjust Price |
+| facshr | Factor to Adjust Shares |
+| hexcd | Header Exchange Code |
+| hsiccd | Header SIC Code |
+| hsicig | Header SIC Industry Group |
+| hsicmg | Header SIC Major Group |
+| issuno | Nasdaq Issue Number |
+| mmcnt | Market Maker Count |
+| naics | North American Industry Class System |
+| nameendt | Names Ending Date |
+| ncusip | Ncusip |
+| nextdt | Date of Next Available Information |
+| nmsind | National Market Indicator |
+| nsdinx | NASD Index |
+| numtrd | Number of Trades |
+| nwperm | New CRSP Permno |
+| openprc | Open Price |
+| paydt | Payment Date |
+| permc | CRSP Permanent Company Number |
+| prc | Price |
+| primexch | Primary Exchange |
+| rcrddt | Record Date |
+| ret | Holding Period Return |
+| retx | Return without Dividends |
+| secstat | Security Status |
+| shrcd | Share Code |
+| shrcls | Share Class |
+| shrflg | Share Flag |
+| shrout | Number of Shares Outstanding |
+| siccd | SIC Code |
+| sprtrn | Return on S&P Composite Index |
+| ticker | Ticker |
+| trdstat | Trading Status |
+| trtscd | Traits Code |
+| tsymbol | Trading Symbol |
+| vol | Share Volume |
+| vwretd | Value-Weighted Return (includes distributions) |
+| vwretx | Value-Weighted Return (excluding dividends) |
+
+## Cash return
+### CRSP TREASURIES - Issue Descriptions and Daily Time Series
+| Key | Value |
+| --- | --- |
+| Library: | crspa |
+| File: | tfz_dly |
+| Data Range: | 06/14/1961 - 12/31/2015   |
+| Last Updated On: | 02/02/2016 |
+| Update Schedule: | Annually |
+
+Variable Reference
+
+| Variable Name | Variable Description |
+| --- | --- |
+| TCUSIP | Treasury CUSIP |
+| TDRETNUA | Daily Unadjusted Return |
+
+## Carhart factors
+### Fama-French Factors - Monthly Frequency
+| Key | Value |
+| --- | --- |
+| Library: | crspa |
+| File: | factors_monthly |
+| Data Range: | 07/01/1926 - 01/29/2016   |
+| Last Updated On: | 03/14/2016 |
+| Update Schedule: | Quarterly |
+
+Variable Reference
+
+| Variable Name | Variable Description |
+| --- | --- |
+| hml | High Minus Low (HML) |
+| mktrf | Excess Return on the Market (MKTRF) |
+| rf | 	Risk-Free Interest Rate (One Month Treasury Bill Rate) (RF) |
+| smb | Small Minus Big (SMB) |
+| umd | Momentum (UMD) |
