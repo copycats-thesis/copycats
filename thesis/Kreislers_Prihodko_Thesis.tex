@@ -1,0 +1,697 @@
+\documentclass[12pt, a4]{article}
+%\usepackage[utf8]{inputenc}
+\usepackage[natbibapa]{apacite}
+\usepackage[
+	protrusion=true,
+	expansion=true,
+	tracking=true
+]{microtype}
+\usepackage{amsmath}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{changepage}
+\usepackage{tabularx}
+\usepackage[flushleft]{threeparttable}
+\usepackage{pdflscape}
+\usepackage{geometry}
+\usepackage{rotating}
+\usepackage{moresize}
+\usepackage{siunitx} %defines decimal and thousand separators (num)
+\sisetup{
+	output-decimal-marker = {.},
+	group-separator = {\,}
+}
+\usepackage{xfrac}      % for beautiful fractions using \sfrac
+\usepackage{enumerate}  % for roman numbers in enumerate
+\usepackage{lipsum}     % for text placeholders
+\usepackage[unicode, hidelinks]{hyperref}   % for referencing sections by names 
+\usepackage{breakurl}   % for multiple line URLs
+\usepackage{tikz}
+\usepackage{floatpag}	  % for suppressing page numbers on floats
+
+\newcolumntype{R}{>{\raggedleft\arraybackslash}X}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+\title{Copycat Strategies:\\ Is This the End of Active Investing?\thanks{Placeholder for acknowledgements: we would to express our gratitude to people and some other people and also that one guy... well you know.}}
+\author{Em\={\i}ls Kreislers \and Nikolajs Prihodko}
+\date{\parbox{\linewidth}{\centering%
+		Supervisor: Michael Halling\endgraf\vspace{6ex}
+		Stockholm School of Economics\endgraf\medskip
+		May 2016
+		}} 
+
+
+\begin{document}
+\maketitle
+
+\begin{abstract} \noindent % there should be no paragraph indent in abstract
+	The aim of this paper is to see whether it is possible to efficiently copy the investment strategy of \textsc{US} equity-only mutual funds, based on their disclosure to the \textsc{SEC}. Copycat performance is evaluated at the full sample, and then in smaller groups in order to determine whether some types of funds are better candidates for copying. The results indicate that the copycat funds can keep up with their primitive counterparts in all instances, and even outperform the funds with a high expense ratio and funds that were easy to copy in the past. Different copycat fund sizes are also considered, but play no significant role in the results.
+\end{abstract}
+
+\textbf{Keywords:} mutual, fund, copycat, investment, strategy
+	
+\textbf{\textsc{JEL} Classification:} G11, G14, G23
+
+\newpage
+
+\tableofcontents
+
+\clearpage
+
+
+
+
+\section {Introduction}
+
+Since the beginning of investing, investors have tried to discover ways to get an `edge' on the other investors to generate profits, be it through research, trade implementation, market manipulation or other means.
+
+Naturally, fund managers want to protect their investment ideas from outside investors to generate the maximum potential returns. Secrecy and information asymmetry can, in turn, lead to various agency issues, leading to suboptimal results to the investor. Therefore, disclosure requirements have been imposed by the regulatory authorities over time to give the opportunity for an investor to confirm whether the manager follows their intended investment strategy.
+
+But the curious might ask whether the current trend of disclosure requirements allow for the savvy observer of the filings to benefit from the investment research of others, without actually paying for it. This is especially relevant given the strong growth of the passive asset management industry, which has been the recipient of record net inflows in 2015 and already manages \sfrac{1}{3} of all long-only assets under management in the \textsc{US} \citep{bloomberg}. Therefore, we try to copy the holdings of \textsc{US} mutual funds (\textit{primitive} funds), and see whether it constitutes a viable investment strategy.
+
+Thus, the authors of the paper answer the following research questions:
+
+\begin{itemize}
+    \item Can copycat funds match or exceed the performance of the primitive mutual funds in the \textsc{US}?
+    \item Is the mimicking performance enhanced by selection criteria, such as past performance, expense ratio or past return difference?
+    \item Do copycat funds of different sizes perform differently?
+\end{itemize}
+
+The overall results are mixed, copycat funds match their primitive counterparts' performance, and can even exceed it. Expensive and easy-to-copy funds in the past are good candidates, which can be copied very efficiently, and potentially be used in trading strategies. 
+
+Section \ref{sec:lit-rev} presents the relevant research and development in copycat strategies. Section \ref{sec:methodology} describes the methodology and data. Section \ref{sec:results} discusses the results and their implications. Section \ref{sec:conclusions} concludes.
+
+\clearpage
+\section{Literature review}\label{sec:lit-rev}
+
+\subsection{Delivery of superior returns}
+
+The ability of asset managers to deliver superior returns has been at the forefront of financial research at least since the middle of the 20th century, after the development of asset pricing models by \cite{sharpe}, \cite{litner} or \cite{treynor}. In a seminal paper, it was discovered that mutual funds on average were unable to predict security prices well enough to outperform the buy-and-hold market portfolio. The findings are also robust for individual mutual funds \citep{jensen}.
+
+However, this did not stop academicians from trying to decipher the reasons for the existence of active mutual funds. One of the first modern forays into the field of assessing the talent of asset managers was done by \cite{grinblatt}, who compare the abnormal returns of both active and passive investment strategies of mutual funds from 1975 to 1984. From this, transaction costs and determinants of abnormal returns are calculated. \citeauthor{grinblatt} conclude that transaction costs are relatively large (around 2.5 per cent) and are inversely related to fund size. Furthermore, gross abnormal returns are also inversely related to fund size, but given the previous findings on transaction costs, net returns are unrelated to actual fund size. Finally, net returns do not appear to display any abnormal returns for any category of the funds (Growth, Income, Balance, etc.). Essentially, this is a precursor to later copycat strategy research, but does not focus on the performance of copycat funds as an investment strategy, but treat them as a benchmark for the mutual funds being researched to separate outperformance from the rest of risk exposure.
+
+The ideas first explored by \cite{grinblatt} are developed further by \cite{daniel}, who evaluate the stock-picking ability of mutual fund managers based on the characteristics of stocks in their portfolios. Overall, 2500 equity funds are covered from 1975 to 1994. To evaluate the ability, 125 reference portfolios are created (based on indicators like market capitalisation, market-to-book ratio, and momentum), to which individual stocks are matched. These matched portfolios are then used to build timing and selectivity measures. The results show that funds (especially aggressive growth funds) have a selectivity ability, however no funds exhibit a timing ability. This is explored further in \cite{wermers_2012}, who employ a generalised-inverse regression approach and find that the estimator exhibits consistent and significant predictive power, even controlling for size, market-to-book and momentum factors, as well as skill proxies, meaning that stock-picking is a skill separate from the aforementioned.
+
+To shed some light on whether the stock-picking abilities of asset managers are actually value-adding to the investor, \cite{wermers_2000} explores the value-added by active mutual fund management and finds that funds hold stocks that outperform the market by 1.3 per cent, but underperform in net terms by 1 per cent. This performance difference is then attributed to worse performance of non-stock holdings (0.7 per cent), and expenses and transaction costs (1.6 per cent). \citeauthor{wermers_2000} concludes that active fund managers possess valuable information about future performance and stocks, and creates precedent for copycat strategies to free-ride on the active manager's costly information through looking at mandatory disclosure filings.
+
+\subsection{Disclosure legislation and its effects}
+
+The change in the Securities and Exchange Commission (\textsc{SEC}) reporting requirements in 2004 led to a resurgence in interest in the performance of copycat strategies. The \textsc{SEC} had required registered investment companies to post their portfolio holdings within 60 days after the end of each fiscal 6-month period (Title 17, Chapter II, \S\ 270.30b1-1 of the Code of Federal Regulations). This was supplemented in May 2004 with \S\ 270.30b1-5, which required investment companies to submit quarterly portfolio disclosure, maintaining the same 60-day window as previously. This was a contentious decision, which included both benefits and costs.
+
+When it comes to benefits, more frequent disclosure can create more demand for the securities held by the fund, thereby driving up the price. It also facilitates investors' monitoring of the securities held by various funds, thus improving overall asset allocation and diversification choices. In addition to this, some investors may see more frequent disclosure as a valuable activity from a corporate governance point of view, to detect a deviation from the stated strategy of the fund and `window dressing', for example. This is corroborated by the fact that some mutual funds already disclose portfolio holdings more frequently than required \citep{frank}.
+
+On the cost side, \cite{wermers_2001} notes that potential returns to mutual fund investors would likely decrease with increased disclosure due to front-running by other market participants, free-riding on the funds' research, increased costs of providing liquidity to shareholders, and costlier tax-management strategies.
+
+To measure the effects of the \textsc{SEC}'s decision, \cite{agarwal} explore the liquidity impact on the disclosed stocks and the fund performance. The results show that stocks with higher ownership by funds experience larger increases in liquidity after the decision, and the effect is especially pronounced for stocks held by more informed funds, and stocks with high information asymmetry. When it comes to fund performance, the analysis suggests that more informed funds experience a performance deterioration after the change, with funds holding stocks with high information asymmetry again being the most hit. Overall, it is concluded that disclosure improves liquidity but hurts the performance of informed investors.
+
+To gain insight whether non-mandatory disclosures follow a specific pattern, \cite{ge} explore the determinants of the frequency of disclosure of mutual funds. It is found that funds with higher turnover, higher expense ratios, and higher likelihood of committing fraud are disclosing their holdings at a less frequent basis. The results testing the investment skill of managers are then separated alongside two effects: 
+
+\begin{enumerate}[i)]
+    \item the information effect (costs of more frequent disclosure due to informational advantage), and 
+    \item agency effect (benefits of disclosure to avoid agency issues).
+\end{enumerate}
+
+The results are split across these lines. Firstly, past winners who disclose less frequently perform better than past winners who disclose more frequently, which directly shows the information effect at play. Secondly, past losers with less frequent disclosure underperform their peers with more frequent disclosure, which is consistent with the agency effect. Furthermore, the relationship between disclosure frequency and new money flows is explored. It is found that new money flow is stronger for poorly performing funds with more frequent disclosure, compared to those with less frequent disclosure.
+
+\subsection{Copycat strategies}
+
+Naturally, finding out that asset managers have valuable information about the future performance of stocks and the ability to exploit their information has implications for creating a profitable trading strategy. One of the first applications of this idea comes from \cite{frank} who explore subsamples of a sample of 812 mutual funds in the \textsc{US} between 1992 and 1999. They find that disclosure is dependent on the size of the fund (larger funds disclose holdings less frequently, likely due to cost prohibitions) and the liquidity of its holdings (funds holding more widely traded stocks disclose holdings more frequently). When it comes to replicating performance, the copycat funds equal or exceed the performance of mutual funds being copied (\textit{primitive} funds) in net terms, both in the subsample of high expense funds and the broader subsample. In gross terms, copycat funds cannot keep up with their original counterparts. They also find no difference in systemic risk exposure between copycat and primitive funds. Therefore, the authors conclude that copycat strategies enable investors to construct portfolios that efficiently mimic actively managed mutual funds, thereby potentially eroding their market share.
+
+In their research testing the performance of copycat strategies, \cite{verbeek} use a database of \textsc{US} mutual funds from 1985 to 2008, adjusted for survivorship bias and find that copycat funds are capable of generating similar net performance to their target funds. However, in terms of gross returns, primitive funds beat the copycats, as expected. However, it is noted that dispersion exists and funds with high past performance (`past winners'), and funds with more representative disclosure are the best candidates for replication. The performance of the selective copycat strategy is deemed to exceed the majority of the mutual funds in the sample. The result that funds with less representative disclosure are not good candidates for replication is supported by the findings of \cite{kacperczyk}, who report on the impact of unobserved actions on fund returns by analysing the return difference of \textsc{US} equity funds from 1984 to 2003. They find that the average return difference is close to zero, however significant cross variation exists. The main finding of the paper is that past return difference helps to predict future performance, where funds with high past return differences outperform their low return difference peers both before and after adjusting for differences in risk and investment style. The return difference also exhibits strong persistence up to five years into the future, which is suggested to be driven by systemic factors.
+
+Since most fund investors care for net returns, instead of gross returns for any particular investment strategies, transaction costs are an important factor to consider. Contrary to \cite{frank}, \cite{verbeek} also model transaction costs of the copycat funds according to the findings of \cite{keim} and \cite{wermers_2000}, instead of assuming a static expense ratio of an index fund. Interestingly, it is noted that the success of copycat strategies has increased since the 2004 decision, thereby supporting the findings of \citeauthor{wermers_2000} and \cite{agarwal}.
+
+In addition to this, \cite{kim} use the \textsc{SEC}'s 13F filings and high frequency trade data to discover whether a viable copycat strategy exists for the hedge fund universe. To add to the relevance, only top 5 positions for each fund are copied and held until a day before the next filing, since those show the highest manager conviction (proxied by smaller turnover on average than other positions), given the concentrated bets of hedge funds. The results show that mutual funds earn significant and positive abnormal returns using this strategy (2.84 per cent if equal weighting is used, and 2.21 per cent if principal weighting is used instead). It has to be noted that these opportunities are arbitraged away quickly, as abnormal returns disappear if trades are initiated one day after the initial disclosure, and most success comes from copying hedge funds with low portfolio turnover rates to minimise the negative effect from delayed disclosure.  Their paper also contributes to the previously mentioned discussion of the costs and benefits frequency of disclosure. In this case, it is apparently very costly for long-term value-oriented hedge funds, as the 45-day delay does not protect them from copycat investors. It is signified by the fact that copycat purchases take up only 0.14 per cent of all stock purchases by copycat funds three days before disclosure, and it grows to 1.18 per cent on the disclosure day.
+
+
+\clearpage
+\section{Data description and methodology}\label{sec:methodology}
+
+\subsection{Data}
+
+The data for the study was obtained from the Wharton Research Data Services (\textsc{wrds}) web-site. Bond index data came from the Federal Reserve Bank of St. Louis. The data was retrieved on various dates between February and May 2016. More information on how and where the data was obtained can be found in the \nameref{sec:appendices} in the section \nameref{sec:data-sources}.
+
+\subsubsection{Data selection}
+
+The study covers the time period from January 1, 1990 till October 31, 2012. We gather data on mutual fund performance from the \textsc{crsp} Mutual Funds database, which we then link to their holdings from Thomson Reuters S12 Mutual Fund Holdings database.
+
+Following \cite{verbeek}, we try to identify equity-only funds by their investment objectives. In addition to this, all index funds are excluded from the analysis. We also impose a minimum level of common stock plus cash holdings, which is set at 90 per cent. We also exclude funds with equity holdings of more than 120 per cent or less than 0 per cent in at least one of the periods, because we focus on cheaply implementable strategies, while these proportions of equity impliy costly short positions or leverage. This yields a sample size of 3237 mutual funds.
+
+A more detailed explanation of how we select funds can be found in the \nameref{sec:appendices} in the section \nameref{sec:equity-only}. Summary statistics of the resulting sample can be also found there in the section \nameref{sec:sample-summary-statistics}.
+
+\subsection{Construction of copycat returns}
+
+We replicate a primitive fund using the information about its holdings, which is regularly disclosed to the \textsc{SEC}. The reporting frequency may differ across funds due to both changing regulatory requirements (as discussed in the literature review), and voluntary disclosure that goes beyond what the law mandates. 
+
+First, we replicate the holdings of a primitive fund on each disclosure date. Returns obtained using weighted-average returns of holdings are then called \textit{gross returns}. Then, we account for transaction costs and call this type of return \textit{after trading costs return} (\textsc{ATC} return). Additionally, we impose a fee on the copycat funds, which is assumed to cover the overhead costs of the fund. Returns that account for this type of expenses are then called \textit{net returns}.
+
+For primitive funds, net returns are reported, and \textsc{ATC} returns are inferred from reported expense ratio.
+
+\subsubsection{Disclosure date}
+
+The disclosure date and the date on which the holdings were valid (report date\footnote{The date at which the snapshot of holdings was made (the \texttt{rdate} variable in the Thomson Reuters database).}) are inherently different due to the 60-day window, during which mutual funds are allowed to post their holdings. Since the actual disclosure date is not immediately available, assumptions have to be made. \cite{verbeek} and \cite{frank} impose a 60-day window (the maximum allowed under the current law) between the date of disclosure and the report date, while \citeauthor{kacperczyk} simulate copycat performance on the report date instead of the disclosure date, when the holding data might actually become available. 
+
+We use the report date with additional 60 days to find the latest possible disclosure date, however if the information about holdings was added into Thomson Reuters database before the end of this window, then we assume that the fund has disclosed its holdings earlier, and we use the vintage date\footnote{The date on which the data was gathered by Thomson Reuters (the \texttt{fdate} variable in the database).} at which the data was entered into the Thomson Reuters database. 
+
+In this way we do not use unrealistic assumption that the report date always coincide with the disclosure date used by \cite{kacperczyk}, but also allow for disclosure dates earlier than 60 days after the report date, unlike \cite{verbeek} and \cite{frank}. This is possible, because we expect that if the data is available for Thomson Reuters then the disclosure had already happened.
+
+This is still not perfect, because vintage days are always at the end of the quarter and therefore can be after both report days with 60-day window and the actual disclosure date. However, if the copycat strategy works under these restricted circumstances, it should work under a smaller disclosure window as information will be less stale. Furthermore, if there are more than one holdings disclosures for the given report date, we use the first available one, as restatements are not available at the first disclosure date.
+
+We rebalance fund portfolio using the closing prices for the implicit disclosure date, implying that the rebalancing happens at the end of the day.
+
+\subsubsection{Gross returns}
+
+The copycat fund gross monthly return is defined as (copying fund $j$ at time $t$, taking into the account the weight in asset $i$ at the last disclosure):
+
+\begin{align}
+    Gross\ return_t^j = \sum^N_{i = 1}w_{i,disclosed}^j R_{i,t}.
+\end{align}
+
+The weight for the first date after rebalancing $w_{i,disclosed}^j$ is given by:
+
+\begin{align}
+    w_{i, disclosed}^j = \frac{N_{i, disclosed}^j P_{i, disclosed}}{\sum_{i = 1}^N N_{i, disclosed}^j P_{i, disclosed}}.
+\end{align}
+
+After the rebalancing the weights are allowed to fluctuate according to the market performance until the next rebalancing date.
+
+\subsubsection{After trading costs return}
+
+On each rebalancing date, transaction costs are added to the calculations and are subtracted from the copycat fund return for that day. It is no secret that transaction costs can often limit the real-life implementation of a trading strategy, especially if it requires a lot of trading. Transaction costs are modelled after the approach used in \cite{kacperczyk} and \cite{verbeek}, who in turn model their approach after \cite{keim} and \cite{wermers_2000}.
+
+Unlike \cite{verbeek}, who have assumed that the size of a copycat fund is the same as the size of the primitive fund and copied changes in share number one-to-one, we assume different fund sizes. We believe that this is more realistic, because a copycat fund is likely to be smaller than the original fund. We study the effect of trading costs for three different fund sizes: \$10 million, \$50 million, and \$250 million (the average primitive fund size in the sample is \$452 million). 
+
+Furthermore, in the construction of transaction costs, a static fund size is assumed to ensure that no preference is given to later funds having an advantage in terms of execution costs due to later start up. Otherwise, at the same date, earlier funds would have grown their assets under management and thus forced to buy larger blocks when rebalancing. For example, without this assumption, a copycat fund that is \$10 million in size in 1990 will be, for instance, \$30 million in 2010. Therefore, it will experience larger trading costs than a fund that just started its existence in 2010 and therefore is still of the size \$10 million. Since this effect of the fund age on trading costs is arbitrary and therefore undesirable for our analysis, we decided to assume constant fund sizes.
+
+Transaction costs are computed as such (in per cent of trade value):
+\begin{align}
+    C_{i,t}^{Buy} = &\ 1.098 + 0.336 D_{i,t}^{nasdaq} + 0.092 \ trSize_{i,t} \nonumber \\ 
+    &\ - 0.084 \ln(mCap_{i, t}) + 13.807 \left( \frac {1}{P_{i, t}} \right), \\
+    C_{i,t}^{Sell} = &\ 0.979 + 0.058 D_{i, t}^{nasdaq} + 0.214 \ trSize_{i,t} \nonumber \\
+    &\ - 0.059 \ln (mCap_{i,t})+6.537\left(\frac {1}{P_{i,t}}\right),
+\end{align}
+where $D_{i,t}^{nasdaq}$ is a dummy variable if the stock is traded on \textsc{nasdaq}, $trSize_{i,t}$ is the dollar trade size divided by the total dollar market capitalisation, $\ln(mCap_{i,t})$ is the natural logarithm of the market capitalisation (in thousands), and $P_{i,t}$ is the stock price at the day of the trade. Due to this construction, it is possible that transaction costs become negative in some cases where the market capitalisation is very large, and thus we limit the minimum transaction costs to zero.
+
+But since we are interested in transaction costs in percentage of assets in order to find the impact on returns, we additionally multiply them by percentage of the fund that has been traded and by the copycat fund size: \$10 million, \$50 million, or \$250 million.
+
+After accounting for trading costs, we obtain \textsc{ATC} returns.
+
+\subsubsection{Overhead expenses}
+
+In addition to transaction costs, a combined yearly management and administrative fee of 20bps is assumed, following the example of \cite{frank} and \cite{verbeek} to simulate the overhead costs for the fund. For the primitive funds, where only net returns are reported by the \textsc{crsp}, we follow \cite{cohen}, who suggest to add \sfrac{1}{12} of the fund's expense ratio every month to the net return to arrive at the \textsc{ATC} return. However, \citeauthor{cohen} calls these returns \textit{gross returns} when the expense ratio does not include transaction costs (not all parts of which are immediately observable, e.g. price impact).
+
+\subsubsection{Different asset classes}
+
+Since the Thomson Reuters S12 database only offers \textsc{US} domestic equity holdings, assumptions have to be made regarding the other asset classes in the primitive fund portfolios. The proportions of different asset classes in funds' holdings are taken from the \textsc{crsp} Fund Overview database. We obtain proportion of common stock and cash, leaving the rest to category \textit{other}. 
+
+Performance of cash in the copycat portfolios is assumed to follow the \textsc{US} Treasury returns. And all other assets, which are likely to be mostly bonds, are simulated using the Bank of America Merrill Lynch \textsc{US} 3--5 year corporate bond index returns, similar to \cite{verbeek} who use a Barclays bond index. 
+
+Finally, it is assumed that the invested asset portion in the copycat portfolio cannot exceed 100 per cent (thus, no leverage), as it is generally left to hedge funds, with their higher fees and lower correlation to standard market assets \citep{hsieh}.
+
+\subsection{Performance analysis}
+
+\subsubsection{Full sample analysis}
+First, we perform a full sample overview. We calculate the \textit{average} returns and alphas \textit{by fund}. Then we study the distributions of these averages and their differences. We compute means and quartiles. For returns, we perform a simple one-sample $t$-test of the mean being equal to zero. For differences we test whether the two series of returns (e.g. net copycat returns and net primitive fund returns) have equal means using the Welch's version of the two-sample $t$-test. We also test whether two series of returns are equally distributed using the non-parametric Mann---Whitney $U$ test. We create boxplots for more convenient visualisation.
+
+Additionally, we calculate the average returns for each month across all funds available in that period, we call these measures  
+\textit{average by month}. Then we calculate means and quartiles and perform the same tests as described above. Again, we create boxplots for more convenient visualisation.
+
+To explain potential discrepancies between the two ways of averaging (across months for each fund and across funds for each month), we sort the funds into 10 deciles according to the length of returns history and compute several performance measures.
+
+\subsubsection{Decile analysis}
+
+To gain more insight into how copycat performance differs across categories of funds, we sort the funds based on certain characteristics. Every January, April, July and October, copycat funds are sorted into decile portfolios to test whether copying funds following certain parameters yields better results. The sorting parameters are:
+
+\begin{itemize}
+	\item Average expense ratio of the primitive funds over the last 12 months, following \cite{frank}. The logic behind it is that one could expect that the best performing funds are also the most expensive, as the fund managers need to keep up with their research costs.
+	\item Average \textsc{ATC} returns of the primitive funds over the last 12 months, following \cite{verbeek}. In this way we try to identify best funds using past performance.
+	\item Average net return difference between copycat and primitive funds over the last 12 months, following \cite{verbeek} and \cite{kacperczyk}. In this approach we try to identify whether the funds that were easy to copy in the past remain so in the future.
+	\item Carhart alpha of the \textsc{ATC} returns of the primitive funds using last 12 months \citep{carhart}. In this way we try to identify best funds in terms of abnormal returns, because that should indicate pure manager's skill.
+\end{itemize}
+
+We then compare the \textsc{ATC} and net return (alpha) differences, taking into account different copycat sizes. In addition to that, we also apply the four-factor model by \cite{carhart} to see whether any abnormal return performance exists in the return and the return difference. To control for heteroscedasticity and autocorrelation, we use a variance-covariance matrix as suggested by \cite{newey}.
+
+The regression model looks like this:
+
+\begin{align}
+    R_t = \alpha_t + \beta_{MKT}R_{MKT, t} + \beta_{SMB}R_{SMB, t} + \beta_{HML}R_{HML, t} + \beta_{MOM}R_{MOM, t} + \varepsilon_t,
+\end{align}
+where $R_t$ is either the return or the return difference.
+
+
+\clearpage
+\section{Empirical results}\label{sec:results}
+
+\subsection{Full sample}
+
+\subsubsection{Averages by fund}
+
+The results of averages by fund are represented in Figure \ref{fig:boxplot-returns-funds} and Table \ref{tab:whole-sample-fund-means} in the \nameref{sec:appendices} in the section \nameref{sec:performance-analysis}. 
+
+We see that the \textsc{ATC} returns of both primitive and copycat funds of all sizes are significantly above zero. This is as expected, because we focus on all-equity funds and therefore the results should roughly follow the expected equity returns, which are positive. 
+
+There is no statistically significant difference in the means of \textsc{ATC} returns of the primitive and copycat funds of any size. This suggests that it is possible to copy the performance of mutual funds based on their disclosure information.
+
+Both copycat and primitive \textsc{ATC} returns are negatively skewed, which means that they have fat left tails. Having the same median, copycat returns, however, have fatter left and thinner right tail, which is an undesirable property for returns.
+
+There are statistically significant differences in the net returns of primitive and copycat funds. The results suggest that copycat funds outperform their primitive counterparts in terms of average returns on significance level below 1\%.
+
+This outperformance, however, can be due to different risk loading. Figure \ref{fig:boxplot-alphas-funds} and Table \ref{tab:whole-sample-fund-means} in the \nameref{sec:appendices} in the section \nameref{sec:performance-analysis} account for this possibility by comparing the Carhart alphas of copycat funds and their primitive counterparts. 
+
+Alphas for both primitive and copycat \textsc{ATC} returns are below zero. This is reasonable, because factors (market risk-premium, small-minus-big, high-minus-low, and momentum) are computed without accounting for trading costs. Net alphas are also negative, which is reasonable given that they should be worse than the \textsc{ATC} alphas.
+
+An interesting thing, however, is the negative alpha for gross (before accounting for trading costs) copycat returns. A possible explanation for that would be that the managers of the primitive funds try to beat the market by stock-picking and market-timing. Thus, holdings of primitive funds are not broad due to the attempts to pick winners only. This translates into underdiversified portfolios of the copycat funds. Coupled with the time lag, they might also miss the benefits of market timing.
+
+The mean alphas of the primitive and copycat returns are not statistically significant for the \textsc{ATC} returns, which is in line with the absence of difference in the \textsc{ATC} returns.
+
+The mean Carhart alphas of copycat net returns are significantly larger than their primitive counterparts' at the 5\% significance level. However the same is not true for the 1\% significance level ($p$-value is \num{0.04}). Thus, the results are inconclusive.
+
+In terms of copycat fund sizes, there are no notable differences across them. This means that larger size copycats can perform at the same level as the smaller ones.
+
+\begin{figure}
+	\thisfloatpagestyle{empty}
+	\centering
+	\caption{Full sample mean returns, return differences by fund.}
+	\label{fig:boxplot-returns-funds}
+	\begin{subfigure}[t]{\linewidth}
+		\input{figures/figures_means_boxplots.tikz}
+		\caption{Returns}
+		\label{fig:boxplot-returns-funds-returns}
+	\end{subfigure}
+	
+	\begin{subfigure}[b]{\linewidth}
+		\input{figures/figures_means_diff_boxplots.tikz}
+		\caption{Return differences}
+		\label{fig:boxplot-returns-funds-diff}	
+	\end{subfigure}
+	\caption*{\scriptsize ~Note: this figure shows average returns and average return differences by fund. Return difference is defined as the return of a copycat fund minus the return of its primitive counterpart. Copycat returns are computed assuming three different copycat fund sizes: \$10, \$50, and \$250 million. \textsc{ATC} returns account for trading costs and net returns additionally account for management and administrative fees. The sample period spans from January 1990 till October 2012. The number of different funds in the sample is 3237. The upper (lower) whisker extends from the hinge to the highest (lowest) value that is within $1.5 \times IQR$ of the hinge, where $IQR$ is the interquartile range. The notches extend to $\pm 1.58 \times \sfrac{IQR}{\sqrt{n})}$. They give roughly a 95\% confidence interval for the difference in two medians. Red solid line indicates the mean. Red dashed line indicates the 95\% confidence interval of the mean. }
+\end{figure}
+
+\begin{figure}
+	\thisfloatpagestyle{empty}
+	\centering
+	\caption{Full sample Carhart alphas, Carhart alpha differences by fund.}
+	\label{fig:boxplot-alphas-funds}
+	\begin{subfigure}[t]{\linewidth}
+		\input{figures/figures_alphas_boxplots.tikz}
+		\caption{Returns}
+		\label{fig:boxplot-alphas-funds-return}
+	\end{subfigure}
+	
+	\begin{subfigure}[b]{\linewidth}
+		\input{figures/figures_alphas_diff_boxplots.tikz}
+		\caption{Return differences}
+		\label{fig:boxplot-alphas-funds-diff}	
+	\end{subfigure}
+	\caption*{\scriptsize ~Note: this figure shows Carhart alphas and Carhart alpha differences by fund. Carhart alpha difference is defined as the alpha of a copycat fund minus the alpha of its primitive counterpart. Copycat Carhart alphas are computed assuming three different copycat fund sizes: \$10, \$50, and \$250 million. \textsc{ATC} Carhart alphas account for trading costs and net Carhart alphas additionally account for management and administrative fees. The sample period spans from January 1990 till October 2012. The number of different funds in the sample is 3237. The upper (lower) whisker extends from the hinge to the highest (lowest) value that is within $1.5 \times IQR$ of the hinge, where $IQR$ is the interquartile range. The notches extend to $\pm 1.58 \times \sfrac{IQR}{\sqrt{n})}$. They give roughly a 95\% confidence interval for the difference in two medians. Red solid line indicates the mean. Red dashed line indicates the 95\% confidence interval of the mean. }
+\end{figure}
+
+\subsubsection{Averages by month}
+
+The results are represented in Figure \ref{fig:boxplot-returns-months} and Table \ref{tab:whole-sample-month-means} in the \nameref{sec:appendices} in the section \nameref{sec:performance-analysis}. 
+
+Monthly averages are all statistically different from zero at the 1\% significance level. This is reasonable, because we look at all-equity funds, while expected equity return is above zero. 
+
+There are no statistically significant differences between primitive and copycat returns neither after trading costs nor after additional overhead costs. Moreover, the Mann---Whitney $U$ test for the equality of distributions shows that we cannot reject the null-hypothesis of equal distributions at all reasonable significance levels (all $p$-values are above 80\%).
+
+\begin{figure}
+	\thisfloatpagestyle{empty}
+	\centering
+	\caption{Full sample mean returns, return differences by month.}
+	\label{fig:boxplot-returns-months}
+	\begin{subfigure}[t]{\linewidth}
+		\input{figures/figures_means_boxplots_by_months.tikz}
+		\caption{Returns}
+		\label{fig:boxplot-returns-months-return}
+	\end{subfigure}
+	
+	\begin{subfigure}[b]{\linewidth}
+		\input{figures/figures_means_diff_boxplots_by_months.tikz}
+		\caption{Return differences}
+		\label{fig:boxplot-returns-months-diff}	
+	\end{subfigure}
+	\caption*{\scriptsize ~Note: this figure shows average returns and average return differences by month, where average for a month is computed equally-weighting all funds existing in that month. Return difference is defined as the return of a copycat fund minus the return of its primitive counterpart. Copycat returns are computed assuming three different copycat fund sizes: \$10, \$50, and \$250 million. \textsc{ATC} returns account for trading costs and net returns additionally account for management and administrative fees. The sample period spans from January 1990 till October 2012. The number of different funds in the sample is 3237. The upper (lower) whisker extends from the hinge to the highest (lowest) value that is within $1.5 \times IQR$ of the hinge, where $IQR$ is the interquartile range. The notches extend to $\pm 1.58 \times \sfrac{IQR}{\sqrt{n})}$. They give roughly a 95\% confidence interval for the difference in two medians. Red solid line indicates the mean. Red dashed line indicates the 95\% confidence interval of the mean.}
+\end{figure}
+
+These results are not in line with the results of averages by fund. One potential explanation for that can be that the two approaches effectively use two different weighting schemes. In averages by fund, contribution of each fund to the estimate of the overall mean is equal to \sfrac{1}{$n$}, where $n$ is the total number of funds. Conversely, in averages by month, funds that have longer history in our sample contribute to the overall mean more, because the weighting follows an equally-weighted portfolio for all funds active in that given month, and thus funds with longer history `participate' in more monthly estimates. 
+
+If this is due to aforementioned `effective weighting', then we should see that different copycat performance across funds is dependent on the number of observations for each fund. We split all funds into 10 different deciles according to the number of observations per fund and then compute the primitive returns, difference in net returns, and alphas. The results can be seen in Figure \ref{fig:size-deciles} and in the \nameref{sec:appendices} in Table \ref{tab:size-deciles}. There are some clear trends. Funds with shorter history in the sample have lower returns and higher return differences. This suggests that they might be managed by less skillful people (poor performance) that overtrade (higher return difference relative to a copycat strategy that requires trading only about four times a year) and therefore these funds disappear (short history in the sample implies a short life-span).
+
+\begin{figure}
+	\centering
+	\caption{Averages of performance measures within deciles by number of observations per fund in the sample.}
+	\label{fig:size-deciles}
+
+	\input{figures/figures_size_deciles.tikz}
+
+	\caption*{\scriptsize ~Note: this figure shows average returns and average return differences by fund sorted into ten deciles according to the number of observations per fund in the sample. Return difference is defined as the return of a copycat fund minus the return of its primitive counterpart. Copycat returns are computed assuming copycat fund size of \$10 million. \textsc{ATC} returns account for trading costs and net returns additionally account for management and administrative fees. The sample period spans from January 1990 till October 2012. The number of different funds in the sample is 3237. The upper (lower) whisker extends from the hinge to the highest (lowest) value that is within $1.5 \times IQR$ of the hinge, where $IQR$ is the interquartile range. The notches extend to $\pm 1.58 \times \sfrac{IQR}{\sqrt{n})}$. They give roughly a 95\% confidence interval for the difference in two medians. Red solid line indicates the mean. Red dashed line indicates the 95\% confidence interval of the mean.}
+\end{figure}
+
+\subsection{Comparison of subgroups}
+The previous section implies that some funds are potentially more successful than others. Since investors are likely not interested in outperforming poor funds (which still implies poor performance), we would like to identify the best funds. However, it is impossible to know in advance how long a fund will exist, therefore in further analysis we split funds according to various performance-related characteristics and attempt to find any differences in the success of a copycat strategy.
+
+\subsubsection{Expense ratio}
+First, sorting by fund expense ratios is considered. The logic behind this is that funds need resources to cover their costs in finding good deals and thus delivering superior returns to the investor. Unfortunately, as can be seen in Table \ref{tab:expense_ratio_deciles}, this is not the case in the broad sample of mutual funds. There is no clear trend of stronger net returns for the primitive funds as expense ratios grow. There is, however, a trend in net returns of the copycat funds: as expense ratios of their primitive counterparts grow, so do copycat net returns. However, the difference between the first and the last decile is not statistically significant, therefore this trend is not significant either. The case for the \textsc{ATC} primitive and copycat returns is very similar: it looks like there is a trend, but we cannot state that there are statistical differences among deciles.
+
+In terms of after-trading cost returns, mutual funds do not appear to significantly outperform their copycat peers. Similarly, copycats stand their ground in terms of net returns, which is statistically indistinguishable from the primitive funds at every decile.
+
+What is interesting, however, is that copycat performance significantly improves as the expense ratio goes up. This implies that the mechanism behind higher return difference lies in the fact that as the expense ratio of primitive funds grow, expense ratios of copycat funds remain the same. A potential trading strategy could be constructed by going short the lowest decile copycat fund and the highest decile primitive fund, and going long the lowest decile primitive fund, as well as the highest decile copycat. This can potentially yield 1 per cent per annum, but implementability is problematic, as trading costs can potentially spiral out of control. 
+
+Adjusting for risk factor exposure, it is interesting to note that high expense ratio funds generate significantly negative net return alpha, meaning that they actively destroy shareholder value. Copycat funds do not appear to generate significant positive or negative alpha (second panel of Table \ref{tab:expense_ratio_deciles}), but there is a significant difference in alphas across deciles, namely copying high expense ratio funds yields significantly higher alpha than low expense ratio funds. These results hold across all fund sizes. They make us suspect that high expense mutual funds do not earn back their investment in research and other expenses, thereby supporting the findings of \cite{carhart}. It also reinforces the logic for the aforementioned trading strategy, as outperformance is not based on different risk loadings, but instead on abnormal returns.
+
+\subsubsection{Past performance}
+Our attention is then turned to sorting mutual funds based on their past net performance. Table \ref{tab:past_performance_deciles} presents the results. Copycat performance results in this case are impressive, as copycat funds manage to keep up with the primitive funds in all categories. This result contradicts \cite{verbeek}, who find that copycat funds cannot keep up with the top past performers. We also could not confirm their finding that copying top past performers creates a cheap momentum strategy, as there are no significant differences in net returns between the top and bottom decile of copycat funds.
+
+Looking at the differences across deciles, we can notice that there might be a momentum effect present in the primitive fund performance: past winners tend to have higher returns than past loser in both \textsc{ATC} and net terms. However, this difference is not statistically significant at the 10\% significance level. Therefore, even if there are some momentum effects present, the old adage that `past performance does not guarantee future performance' still rings true.
+
+Similarly to the previous case, copycat funds fail to generate significant abnormal returns, and the same can be said about the primitive funds (the mid-decile significant alphas for primitive net returns should be regarded as statistical flukes).
+
+
+\subsubsection{Past return difference}
+
+We then sort all mutual funds by their past return difference. The results can be found in Table \ref{tab:past_return_difference_deciles}. Similarly to the previous cases of the expense ratio and past performance, copycat funds match their primitive counterparts in both \textsc{ATC} and net terms.
+
+There are statistically significant differences in the primitive fund performance between the top and bottom decile. Funds in the bottom decile perform better and this is true for both \textsc{ATC} and net returns. Since funds are sorted according to past return difference, which is defined as performance of copycat funds minus the performance of primitive funds, it means that the first decile contains funds that exhibited the lowest past return difference (worst relative copycat performance). From that it can be concluded that it is difficult to mimic the performance of `good' funds, but easy to copy that of the `bad' funds. The effect appears to be persistent, too.
+
+This idea is reinforced by the fact that there is a statistically significant negative difference in return differences between the bottom and top decile, which creates a potential money-neutral long-short investment strategy by going short the lowest decile copycat fund and the highest decile primitive fund, and going long the lowest decile primitive fund, as well as the highest decile copycat. This can potentially yield 4 per cent per annum, but implementability is problematic, as trading costs can potentially spiral out of control.
+
+\subsubsection{Past risk-adjusted performance: Carhart alpha}
+
+Finally, we sort the mutual funds based on their past alphas. The results are presented in Table \ref{tab:past_alphas_deciles}. Unfortunately, the results again correspond to the established trend. Copycat funds manage to keep up with the primitive funds in both \textsc{ATC} and net returns with return difference being statistically indistinguishable from zero.
+
+What is interesting, however, is that primitive funds with low alphas in the past have significantly higher returns but not statistically different alphas, thereby suggesting that high alpha funds have a lower exposure to risk factors, which could be due to sophisticated trading strategies that aim to limit a fund's exposure to market risk.
+
+Unfortunately, these strategies do not appear to work in the long run, as none of the primitive fund deciles exhibit significant alpha going forward. Moreover, contrary to other sorting methods, where we can observe persistence (statistically insignificant though) in return levels (in case of sorting on past \textsc{ATC} returns) or return differences (in case of sorting on past return differences), sorting on Carhart alphas does not exhibit any such pattern across alphas. It does, however, imply that factor loading is replicable. Therefore, we conclude that funds that generated alpha in the past, cannot sustain the abnormal returns in the future, and do not make for exciting copycat targets.
+
+\newgeometry{left=1.5cm,right=2cm,bottom=0.5cm,top=0.5cm} % modify the page geometry to fit huge tables
+\thispagestyle{empty}
+\begin{landscape}
+
+	\begin{table*}[p] %this is needed to fit table into one page, because threeparttable does not have such an option
+		\centering
+		\ssmall
+		% set up vertical spacing
+		\newcommand{\dspacing}{1ex} % spacing between different decils
+		\newcommand{\panelspacing}{1.5ex} % spacing after panel name
+		\newcommand{\decilename}[1]{\multirow{2}{*}{#1}} % column wih a decile name
+		\newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
+		\begin{threeparttable}
+			\centering
+			\caption{The return and the relative success of copycat strategies by primitive fund expense ratio deciles.}
+			
+			\input{tables/tables_deciles_by_exp_ratio_decile.tex}
+			
+			\label{tab:expense_ratio_deciles}%
+			\begin{tablenotes}
+				\tiny
+				\item Note: this table shows average monthly returns, average return difference (Panel A), Carhart alphas, and Carhart alpha differences (Panel B). Copycat funds are sorted into deciles, based on primitive fund expense ratio, every January, April, July and October. Decile 1 holds the lowest 10\% of the values, while decile 10 holds the highest. Returns of funds are equally-weighted for each month in the respective decile. Then averages or Carhart alphas are computed and reported. Three different sizes of copycat funds are considered: \$10, \$50, and \$250 million. All numbers are reported in monthly terms. Differences are obtained by subtracting primitive returns and alphas from copycat returns and alphas. One-sample $t$-test is performed for returns and two-sample Welch's version of $t$-test for differences and D1$-$D10; $t$-statistics are reported in parentheses. * significant at the 10\% level; ** significant at the 5\% level; *** significant at the 1\% level.
+			\end{tablenotes}
+		\end{threeparttable}
+	\end{table*}
+	
+	\begin{table*}[p] %this is needed to fit table into one page, because threeparttable does not have such an option
+		\centering
+		\ssmall
+		% set up vertical spacing
+		\newcommand{\dspacing}{1ex} % spacing between different decils
+		\newcommand{\panelspacing}{1.5ex} % spacing after panel name
+		\newcommand{\decilename}[1]{\multirow{2}{*}{#1}} % column wih a decile name
+		\newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
+		\begin{threeparttable}
+			\centering
+			\caption{The return and the relative success of copycat strategies by primitive fund past \textsc{ATC} performance deciles.}
+			
+			\input{tables/tables_deciles_by_primitive_return_decile.tex}
+			
+			\label{tab:past_performance_deciles}%
+			\begin{tablenotes}
+				\tiny
+				\item Note: this table shows average monthly returns, average return difference (Panel A), Carhart alphas, and Carhart alpha differences (Panel B). Copycat funds are sorted into deciles, based on primitive fund average \textsc{ATC} return for the past 12 months, every January, April, July and October. Decile 1 holds the lowest 10\% of the values, while decile 10 holds the highest. Returns of funds are equally-weighted for each month in the respective decile. Then averages or Carhart alphas are computed and reported. Three different sizes of copycat funds are considered: \$10, \$50, and \$250 million. All numbers are reported in monthly terms. Differences are obtained by subtracting primitive returns and alphas from copycat returns and alphas. One-sample $t$-test is performed for returns and two-sample Welch's version of $t$-test for differences and D1$-$D10; $t$-statistics are reported in parentheses. * significant at the 10\% level; ** significant at the 5\% level; *** significant at the 1\% level.
+			\end{tablenotes}
+		\end{threeparttable}
+	\end{table*}
+	
+	\begin{table*}[p] %this is needed to fit table into one page, because threeparttable does not have such an option
+		\centering
+		\ssmall
+		% set up vertical spacing
+		\newcommand{\dspacing}{1ex} % spacing between different decils
+		\newcommand{\panelspacing}{1.5ex} % spacing after panel name
+		\newcommand{\decilename}[1]{\multirow{2}{*}{#1}} % column wih a decile name
+		\newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
+		\begin{threeparttable}
+			\centering
+			\caption{The return and the relative success of copycat strategies by past net return difference between copycat and primitive funds deciles.}
+			
+			\input{tables/tables_deciles_by_net_return_decile.tex}
+			
+			\label{tab:past_return_difference_deciles}%
+			\begin{tablenotes}
+				\tiny
+				\item Note: this table shows average monthly returns, average return difference (Panel A), Carhart alphas, and Carhart alpha differences (Panel B). Copycat funds are sorted into deciles, based on average net return difference for the past 12 months, every January, April, July and October. Decile 1 holds the lowest 10\% of the values, while decile 10 holds the highest. Returns of funds are equally-weighted for each month in the respective decile. Then averages or Carhart alphas are computed and reported. Three different sizes of copycat funds are considered: \$10, \$50, and \$250 million. All numbers are reported in monthly terms. Differences are obtained by subtracting primitive returns and alphas from copycat returns and alphas. One-sample $t$-test is performed for returns and two-sample Welch's version of $t$-test for differences and D1$-$D10; $t$-statistics are reported in parentheses. * significant at the 10\% level; ** significant at the 5\% level; *** significant at the 1\% level.
+			\end{tablenotes}
+		\end{threeparttable}
+	\end{table*}
+	
+		\begin{table*}[p] %this is needed to fit table into one page, because threeparttable does not have such an option
+		\centering
+		\ssmall
+		% set up vertical spacing
+		\newcommand{\dspacing}{1ex} % spacing between different decils
+		\newcommand{\panelspacing}{1.5ex} % spacing after panel name
+		\newcommand{\decilename}[1]{\multirow{2}{*}{#1}} % column wih a decile name
+		\newcommand{\mc}[3]{\multicolumn{#1}{#2}{#3}}
+		\begin{threeparttable}
+			\centering
+			\caption{The return and the relative success of copycat strategies by primitive fund past \textsc{ATC} Carhart alpha deciles.}
+			
+			\input{tables/tables_deciles_by_alphas_decile.tex}
+			
+			\label{tab:past_alphas_deciles}%
+			\begin{tablenotes}
+				\tiny
+				\item Note: this table shows average monthly returns, average return difference (Panel A), Carhart alphas, and Carhart alpha differences (Panel B). Copycat funds are sorted into deciles, based on primitive fund Carhart alpha for the past 12 months, every January, April, July and October. Decile 1 holds the lowest 10\% of the values, while decile 10 holds the highest. Returns of funds are equally-weighted for each month in the respective decile. Then averages or Carhart alphas are computed and reported. Three different sizes of copycat funds are considered: \$10, \$50, and \$250 million. All numbers are reported in monthly terms. Differences are obtained by subtracting primitive returns and alphas from copycat returns and alphas. One-sample $t$-test is performed for returns and two-sample Welch's version of $t$-test for differences and D1$-$D10; $t$-statistics are reported in parentheses. * significant at the 10\% level; ** significant at the 5\% level; *** significant at the 1\% level.
+			\end{tablenotes}
+		\end{threeparttable}
+	\end{table*}
+	
+\end{landscape}
+\restoregeometry
+
+\clearpage
+\section{Conclusions} \label{sec:conclusions}
+
+To sum up, the answers to the initial research questions were mixed. It turns out that copycat funds match their primitive counterparts' performance, and even exceed it, but one has to be mindful of the weighting scheme, as it appears easier to copy funds with short lifespans, which can imply poor skill and fund closure. When weighting funds equally for every month, all such outperformance is lost.
+
+This gave impetus to looking more closely at funds with particular characteristics that could proxy for managerial skill.
+
+The first approach was to look at the expensive funds, which should be able to defend their fee structure by offering better net returns to the investor. However, no such pattern can be observed, the expense ratio appears to play no role in the future performance of the mutual fund. Copycat performance is good, but not more than that, and there are notable differences across fund classes. It turns out that copying expensive funds yields much better results than cheaper funds, and a money-neutral long-short trading strategy could theoretically be constructed. 
+
+Another possible scenario was to explore mutual funds that have performed well in the last 12 months. Copycats held their ground again, and kept up with their primitive counterparts. Here, no clear pattern could be observed in the success of copycat funds.
+
+We then turned our attention to funds that were easy to copy in the past and decide whether they continue to do so in the future. The results suggest that funds, which used to be easy to copy in the past, remain easy to copy in the future, with copycat funds in the top decile significantly outperforming the copycat funds in the bottom decile. Unfortunately, these easy-to-copy funds are also the worse performers. Again, a money-neutral investment strategy can theoretically be constructed.
+
+Finally, sorting was performed by past mutual fund \textsc{ATC} alphas. Unfortunately, this was the least interesting category, as copycat funds managed to keep up with primitive mutual funds, and no deviations across deciles could be observed.
+
+Therefore, copycat strategies only appear to be working most efficiently for expensive, and easy-to-copy funds. Unfortunately, these easy-to-copy funds are worse than their peers, and might not create very fruitful opportunities to free-ride on the top manager information set and skills, and does not generate significantly positive abnormal returns. 
+
+When it comes to the impact of the copycat fund size, it appears to play no significant role in the process, as the \textsc{US} market is large and liquid enough to accommodate the trades of a relatively minor player in the market.
+
+\clearpage
+\bibliographystyle{apacite}
+\bibliography{thesis_references}
+
+
+
+
+\clearpage
+\section*{Appendix}\label{sec:appendices}\addcontentsline{toc}{section}{\nameref{sec:appendices}}
+
+\subsection*{Data sources}\label{sec:data-sources}\addcontentsline{toc}{subsection}{\nameref{sec:data-sources}}
+The data sources and dates when the data was retrieved are summarised in Table \ref{tab:data-sources}.
+
+\begin{table}[h!]
+    \centering
+    \begin{threeparttable}
+    \caption{Data sources.}
+    \label{tab:data-sources}
+    
+    \input{tables/tables_data_sources.tex}
+
+    \begin{tablenotes}
+		\scriptsize
+		\item Note: this table presents the sources of data used for the analysis. 
+    \end{tablenotes}
+    \end{threeparttable}
+    
+\end{table}
+
+\subsection*{Data manipulation}\label{sec:data-manipulation}\addcontentsline{toc}{subsection}{\nameref{sec:data-manipulation}}
+\subsubsection*{Obtaining equity-only funds}\label{sec:equity-only}
+We gather data on mutual fund performance from the \textsc{crsp}, which we then link to their holdings from Thomson Reuters S12 Mutual Fund Holdings database using the \textsc{mflinks} database. Since the \textsc{crsp} database can have multiple entries per one Thomson Reuters entry due to keeping information on different share classes with the same underlying pool of assets, we choose the share class that has the longest history of returns. Furthermore, we only use the funds that we were able to link through the \textsc{mflinks} database.
+
+Furthermore, following \cite{verbeek}, we try to identify equity-only funds by their investment objectives. We select only mutual funds with at least one of the following investment classifications or missing:
+
+\begin{itemize}
+    \item Lipper(\texttt{L}): \texttt{EI}, \texttt{EIEI}, \texttt{EMN}, \texttt{G}, \texttt{GI}, \texttt{I}, \texttt{LCCE}, \texttt{LCGE}, \texttt{LCVE}, \texttt{LSE}, \texttt{MC}, \texttt{MCCE}, \texttt{MCGE}, \texttt{MCVE}, \texttt{MLCE}, \texttt{MLGE}, \texttt{MLVE}, \texttt{SCCE}, \texttt{SCGE}, \texttt{SCVE}, \texttt{SESE}, \texttt{SG}.
+    \item Wiesenberger (\texttt{OBJ}): \texttt{SCG}, \texttt{AGG}, \texttt{G}, \texttt{G-S}, \texttt{S-G}, \texttt{GRO}, \texttt{LTG}, \texttt{I}, \texttt{IS}, \texttt{IEQ}, \texttt{ING}, \texttt{GCI}, \texttt{G-I}, \texttt{G-I-S}, \texttt{G-S-I}, \texttt{I-G}, \texttt{I-G-S}, \texttt{I-S-G}, \texttt{S-G-I}, \texttt{S-I-G}, \texttt{GRI}, \texttt{MCG}.
+    \item Strategic Insight (\texttt{SI}): \texttt{SCG}, \texttt{GRO}, \texttt{AGG}, \texttt{ING}, \texttt{GRI}, \texttt{GMC}.
+\end{itemize}
+
+In addition to this, all index funds are excluded from the analysis. We also impose a minimum level of common stock plus cash holdings, which is set at 90 per cent. However, if the investment objective in the \textsc{crsp} database is \texttt{CS}, funds are included in the sample even if they do not reach the 90 per cent threshold. We also exclude funds with equity holdings of more than 120 per cent or less than 0 per cent in at least one of the periods, because we focus on cheaply implementable strategies, while these proportions of equity implies costly short positions or leverage. This yields a sample size of 3237 mutual funds.
+
+Moreover, we use only periods that have both holdings and return data in order to be able to compare copycat and primitive returns. Thus, we additionally exclude funds that do not have overlapping history of returns and holdings.
+
+\subsubsection*{Sample summary statistics}\label{sec:sample-summary-statistics}
+Summary statistics of the sample included into our analysis (after selecting equity-only funds) is shown in Table \ref{tab:summary-statistics}.
+
+\begin{table}
+	\centering
+	\footnotesize
+	\begin{threeparttable}
+		\caption{Summary statistics of the funds in the sample.}
+		\label{tab:summary-statistics}
+		\sisetup{
+			table-auto-round,
+			table-number-alignment = center,
+			table-figures-integer  = 4,
+			table-figures-decimal  = 3
+		}
+
+        \input{tables/tables_summary_statistics.tex}
+
+		\begin{tablenotes}
+			\scriptsize
+			\item Note: this table shows summary statistics of primitive funds in the sample used for the analysis. Observations is the number of observations per fund, it is first averaged on the fund level; everything else is computed using the full sample. Total net assets (\textsc{TNA}) represents the amount of all funds assets minus all liabilities (fees, expenses, etc.). Net asset value represents \textsc{TNA} divided by the number of shares outstanding.
+		\end{tablenotes}
+	\end{threeparttable}
+\end{table}
+
+\subsubsection*{Missing values}\label{sec:missing-values}
+In case of differences in portfolio allocation data, we assume that allocation follows the last valid observation for the fund. If there is no previous observation on  portfolio category holdings in the \textsc{crsp} database due to data deficiencies (mostly between 1998 and 2002), the cash is assumed to follow the average proportion cash (around 6.6 per cent) allocation of mutual funds over the sample. Sample-average is first calculated for each year across all funds, and then is averaged across years. The rest of portfolio is assumed to be equity. 
+
+In case of missing information about expense ratio, it is assumed to follow the average expense ratio (around 1.1 per cent) of mutual funds over the sample. Sample-average is first calculated for each year across all funds, and then is averaged across years.
+
+In case of missing information about stock-related information (price, return, market capitalisation etc.), the stock is ignored and assumed to have a weight of 0 in the current copycat portfolio.
+
+\subsection*{Performance analysis}\label{sec:performance-analysis}\addcontentsline{toc}{subsection}{\nameref{sec:performance-analysis}}
+
+Table \ref{tab:annual} contains annual returns of mutual funds and different asset classes.
+
+Table \ref{tab:whole-sample-fund-means} contains returns, return differences, Carhart alphas, and Carhart alpha differences. These performance measures are first averaged for each fund, and then using these fund-level results, values of the performance measures for the full sample are computed. The resulting statistics are reported in the table.
+
+Table \ref{tab:whole-sample-month-means} contains returns and return differences. These performance measures are first averaged for each month (unlike the previous case), and then, using these monthly values, performance measures for the full sample are computed. The resulting statistics are reported in the table.
+
+Table \ref{tab:size-deciles} contains performance measures of each decile, where deciles are based on the number of observations for each fund. The performance measures are first averaged for each fund, and then, using these fund-level values, performance measures for each decile are computed.
+
+\begin{table}
+	\centering
+	\footnotesize
+	\begin{threeparttable}
+		\caption{Annual returns of stocks, bonds, cash, primitive and copycat mutual funds.}
+		\label{tab:annual}
+		\sisetup{
+			table-auto-round,
+			table-number-alignment = center,
+			table-figures-integer  = 3,
+			table-figures-decimal  = 3,
+		}
+		
+        \input{tables/tables_annual_performance.tex}
+
+		\begin{tablenotes}
+			\scriptsize
+			\item Note: this table shows annual return in percentages of different asset classes used in the analysis, primitive mutual funds, and hypothetical copycat mutual funds. N is the number of different funds within the year. Equity is derived from Fama--French factors (risk-free rate and market premium). Bonds is BofA Merrill Lynch \textsc{US} Corp 3--5yr Total Return Index Value. Cash is return on short-term T-bills. \textsc{ATC} stands for after trading costs and accounts for trading costs. Net return is return after accounting for all mutual fund costs (fees, expenses, etc.). For the copycat returns a fund size of \$10 million is used.
+		\end{tablenotes}
+	\end{threeparttable}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\footnotesize
+	\begin{threeparttable}
+		\caption{Full sample mean returns, return differences, and Carhart alphas by fund.}
+		\label{tab:whole-sample-fund-means}
+		\sisetup{
+			table-auto-round,
+			table-number-alignment = center,
+			table-figures-integer  = 2,
+			table-figures-decimal  = 2,
+			%#table-space-text-pre = 
+			%table-space-text-post =
+		}
+		
+		\input{tables/tables_whole_sample_fund.tex}
+		
+		\begin{tablenotes}\scriptsize
+			\item Note: this figure shows average returns (Panel A) and average return differences (Panel B), average Carhart alphas (Panel C), average Carhart alpha differences (Panel D) by fund. Return difference is defined as the return of a copycat fund minus the return of its primitive counterpart. Copycat returns are computed assuming three different copycat fund sizes: \$10, \$50, and \$250 million. \textsc{ATC} returns account for trading costs and net returns additionally account for management and administrative fees. The sample period spans from January 1990 till October 2012. The number of different funds in the sample is 3237. For returns and alphas a one-sample $t$-test is performed; for differences in returns and alphas the Welch's version of a two-sample of $t$-test is performed; $U$ test is the Mann---Whitney $U$ test for testing whether the data series are equally distributed, only $p$-values of this test are reported.
+		\end{tablenotes}
+	\end{threeparttable}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\footnotesize
+	\begin{threeparttable}
+		\caption{Full sample mean returns, return differences by month.}
+		\label{tab:whole-sample-month-means}
+		\sisetup{
+			table-auto-round,
+			table-number-alignment = center,
+			table-figures-integer  = 2,
+			table-figures-decimal  = 2,
+			%#table-space-text-pre = 
+			%table-space-text-post =
+		}
+		
+		\input{tables/tables_whole_sample_month.tex}
+
+		\begin{tablenotes}\scriptsize
+			\item Note: this table shows average returns (Panel A) and average return differences (Panel B) by month. Return difference is defined as the return of a copycat fund minus the return of its primitive counterpart. Copycat returns are computed assuming three different copycat fund sizes: \$10, \$50, and \$250 million. \textsc{ATC} returns account for trading costs and net returns additionally account for management and administrative fees. The sample period spans from January 1990 till October 2012. The number of different funds in the sample is 3237. For returns and alphas a one-sample $t$-test is performed; for differences in returns and alphas the Welch's version of a two-sample of $t$-test is performed; $U$ test is the Mann---Whitney $U$ test for testing whether the data series are equally distributed, only $p$-values of this test are reported.
+		\end{tablenotes}
+	\end{threeparttable}
+\end{table}
+
+\begin{table}[h!]
+	\centering
+	\begin{threeparttable}
+		\caption{Averages of performance measures within deciles by number of observations of a fund in the sample.}
+		\label{tab:size-deciles}
+		\sisetup{
+			table-auto-round,
+			table-number-alignment = center,
+			table-figures-integer  = 3,
+			table-figures-decimal  = 2
+		}
+        
+        \input{tables/tables_deciles_by_size.tex}
+        
+		\begin{tablenotes}\scriptsize
+			\item Note: this table shows average returns and average return differences by fund sorted into ten deciles according to the number of observations per fund in the sample. Return difference is defined as the return of a copycat fund minus the return of its primitive counterpart. Copycat returns are computed assuming copycat fund size of \$10 million. \textsc{ATC} returns account for trading costs and net returns additionally account for management and administrative fees. The sample period spans from January 1990 till October 2012. The number of different funds in the sample is 3237.
+		\end{tablenotes}
+\end{threeparttable}
+\end{table}
+
+
+\subsection*{Source code}\label{sec:source-code}\addcontentsline{toc}{subsection}{\nameref{sec:source-code}}
+The source code for data manipulation and performance analysis can be found on GitHub: \href{https://github.com/copycats-thesis/copycats}{\texttt{https://github.com/copycats-thesis/copycats}}. There is a detailed description of how the data was obtained and it also contains all the code necessary for obtaining analysis. 
+
+We have used Cygwin 2.4.1 for Windows, Postgre\textsc{SQL} 9.5.2 for Windows, R 3.2.5 with RStudio 0.99.983 for Windows. The \texttt{README.md} file in the repository describes the process in more detail, but the overall outline is the following:
+
+\begin{enumerate}
+    \item Set up Postgre\textsc{SQL} database using bash scripts in Cygwin under Windows.
+    \item Perform some manipulations, including creation of indices and subsetting funds by certain requirements.
+    \item Perform analysis in R.
+\end{enumerate}
+
+
+
+
+
+
+\end{document}
